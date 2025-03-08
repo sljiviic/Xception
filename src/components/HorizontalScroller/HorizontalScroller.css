@@ -1,0 +1,26 @@
+.horizontal-scroller {
+  display: grid;
+  gap: 23px;
+  grid-auto-flow: column;
+  grid-auto-columns: 16%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-padding-inline: 1rem;
+}
+
+.horizontal-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+@media(max-width: 1024px) {
+  .horizontal-scroller {
+    grid-auto-columns: 26%;
+  }
+}
+
+@media(max-width: 767px) {
+  .horizontal-scroller {
+    grid-auto-columns: 32.5%;
+  }
+}

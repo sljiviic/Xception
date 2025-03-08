@@ -1,0 +1,15 @@
+.drop-card {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+}
+
+.drop-card_title {
+  font-size: var(--fs-400);
+}
+
+@media(max-width: 767px) {
+  .drop-card_title {
+    text-align: center;
+  }
+}
