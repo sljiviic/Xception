@@ -1,3 +1,7 @@
+.footer h3 {
+  font-size: var(--fs-400);
+}
+
 .footer__top {
   display: flex;
   padding-bottom: 50px;
@@ -80,10 +84,15 @@
 }
 
 .footer__top__sub-col ul li a:hover,
-.footer__top__sub-col ul li a:active,
 .footer__top__sub-col ul li a:focus {
   text-decoration: underline solid #ffffff;
   opacity: 1;
+}
+
+.footer__top__sub-col ul li a:active {
+  text-decoration: underline solid #ffffff;
+  opacity: 1;
+  transform: scale(0.96);
 }
 
 @media(max-width: 1210px) {
@@ -105,4 +114,3 @@
     align-items: center;
   }
 }
-

@@ -1,4 +1,14 @@
 .horizontal-scroller {
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+}
+
+.horizontal-scroller__title {
+  font-size: var(--fs-400);
+}
+
+.horizontal-scroller__content {
   display: grid;
   gap: 23px;
   grid-auto-flow: column;
@@ -9,18 +19,22 @@
   scroll-padding-inline: 1rem;
 }
 
-.horizontal-scroller::-webkit-scrollbar {
+.horizontal-scroller__content::-webkit-scrollbar {
   display: none;
 }
 
 @media(max-width: 1024px) {
-  .horizontal-scroller {
+  .horizontal-scroller__content {
     grid-auto-columns: 26%;
   }
 }
 
 @media(max-width: 767px) {
-  .horizontal-scroller {
+  .horizontal-scroller__title {
+    text-align: center;
+  }
+
+  .horizontal-scroller__content {
     grid-auto-columns: 32.5%;
   }
 }

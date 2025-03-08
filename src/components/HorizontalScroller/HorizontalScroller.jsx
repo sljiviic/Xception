@@ -31,16 +31,19 @@ const HorizontalScroller = () => {
   }, [])
 
   return (
-    <div className="horizontal-scroller" ref={scrollerRef}>
-      {content.map((element, index) =>
-        <a key={index} href={element.url}>
-          <img
-            src={element.img}
-            alt={element.alt}
-            className="scale1"
-          />
-        </a>
-      )}
+    <div className="horizontal-scroller">
+      <h2 className="horizontal-scroller__title">Daily free drops (~2$)</h2>
+      <div className="horizontal-scroller__content" ref={scrollerRef}>
+        {content.map((element, index) =>
+          <a key={index} href={element.url}>
+            <img
+              src={element.img}
+              alt={element.alt}
+              className="scale1"
+            />
+          </a>
+        )}
+      </div>
     </div>
   )
 }

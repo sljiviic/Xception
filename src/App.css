@@ -3,10 +3,9 @@ header {
 }
 
 .wrapper {
-  /* background-color: red; */
   display: grid;
   gap: 48px;
-  margin: 48px 0;
+  margin: 48px 0 157px 0;
 }
 
 .bonus-card-wrapper {
@@ -29,9 +28,14 @@ header {
   justify-self: center;
   gap: 38px;
   max-width: 751px;
+  padding-bottom: 30px;
 }
 
-.special-offer {
+.social-media-wrapper h2 {
+  font-size: var(--fs-500);
+}
+
+.special-offer-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -40,7 +44,7 @@ header {
 
 .scale1,
 .scale2 {
-  transition: transform .2s ease;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .scale1:hover,
@@ -48,13 +52,23 @@ header {
   transform: scale(0.98);
 }
 
+.scale1:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
+
 .scale2:hover,
 .scale2:focus {
-  transform: scale(0.9);
+  transform: scale(0.92);
+}
+
+.scale2:active {
+  transform: scale(0.88);
+  opacity: 0.85;
 }
 
 @media(max-width: 1024px) {
-  .special-offer {
+  .special-offer-wrapper {
     flex-direction: column;
   }
 }

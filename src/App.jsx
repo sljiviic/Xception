@@ -13,6 +13,7 @@ import gunImage from "./assets/image2.svg"
 import specialOffer1 from "./assets/special-offer1.svg"
 import specialOffer2 from "./assets/special-offer2.svg"
 import Bonus1 from './assets/bcgame.svg'
+import SpecialOffer from "./components/SpecialOffer"
 
 const App = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,67 +49,68 @@ const App = () => {
           <BonusCard
             image={Bonus1}
             title="Bonus Numero uno"
-            text={['Bonus number uno gets u this and this and this', 'Take it like this and this']}
+            description={['Bonus number uno gets u this and this and this', 'Take it like this and this']}
           />
           <BonusCard
             image={Bonus1}
             title="Bonus Numero uno"
-            text={['Bonus number uno gets u this and this and this', 'Take it like this and this']}
+            description={['Bonus number uno gets u this and this and this', 'Take it like this and this']}
           />
         </div>
-        <div className="daily-free-drops-wrapper">
-          <DropCard>
-            <HorizontalScroller />
-          </DropCard>
-        </div>
+        <HorizontalScroller />
         <div className="monthly-free-drop-wrapper">
-          <DropCard>
-            <a href="#">
-              <img
-                src={gunImage}
-                alt="Special drop"
-                className="scale1"
-              />
-            </a>
-          </DropCard>
-          <DropCard>
-            <a href="#">
-              <img
-                src={gunImage}
-                alt="Special drop"
-                className="scale1"
-              />
-            </a>
-          </DropCard>
-          <DropCard>
-            <a href="#">
-              <img
-                src={gunImage}
-                alt="Special drop"
-                className="scale1"
-              />
-            </a>
-          </DropCard>
+          <DropCard
+            url="#"
+            title="Monthly free drop (~50$)"
+            image={{
+              img: gunImage,
+              alt: "alt text",
+              width: "408px",
+              height: "204px"
+            }}
+          />
+          <DropCard
+            url="#"
+            title="SPECIAL DROP"
+            image={{
+              img: gunImage,
+              alt: "alt text",
+              width: "408px",
+              height: "204px"
+            }}
+          />
+          <DropCard
+            url="#"
+            title="Twitch follower drop"
+            image={{
+              img: gunImage,
+              alt: "alt text",
+              width: "408px",
+              height: "204px"
+            }}
+          />
         </div>
         <div className="social-media-wrapper">
           <h2>Stay Connected</h2>
           <SocialMediaLinks />
         </div>
-        <div className="special-offer">
-          <a href="#" className="specail-offer__1">
-            <img
-              src={specialOffer1}
-              alt="An image representing a weakly special offer"
-              className="scale1"
-            />
-          </a>
-          <a href="#" className="specail-offer__2">
-            <img
-              src={specialOffer2}
-              alt="An image representing a weakly special offer"
-              className="scale1"
-            />
-          </a>
+        <div className="special-offer-wrapper">
+          <SpecialOffer
+            image={{
+              img: specialOffer1,
+              alt: "An image representing a weakly special offer",
+              width: "660px",
+              height: "220px"
+            }}
+          />
+          <SpecialOffer
+            image={{
+              img: specialOffer2,
+              alt: "An image representing a weakly special offer",
+              width: "660px",
+              height: "220px"
+            }}
+          />
         </div>
       </div>
       <Footer />

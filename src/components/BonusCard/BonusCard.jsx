@@ -1,6 +1,6 @@
 import './BonusCard.css'
 
-const BonusCard = ({ image, title, text }) => {
+const BonusCard = ({ image, title, description }) => {
   return (
     <div className="bonus-card">
       <div className="bonus-card__wrapper1">
@@ -14,7 +14,7 @@ const BonusCard = ({ image, title, text }) => {
       <div className="bonus-card__wrapper2">
         <h2>{title}</h2>
         <div>
-          {text.map((element, index) =>
+          {description.map((element, index) =>
             <p key={index}>{element}</p>
           )}
         </div>

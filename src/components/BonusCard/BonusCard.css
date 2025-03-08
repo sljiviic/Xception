@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: green; */
   gap: clamp(10px, 2.08vw, 40px);
 }
 
@@ -20,7 +19,7 @@
 
 .bonus-card__wrapper2 p {
   font-size: var(--fs-200);
-  line-height: 16.8px;
+  line-height: 1.05rem;
   opacity: 0.8;
   max-width: 28ch;
 }
@@ -34,13 +33,21 @@
   width: 100%;
   padding: 0.75em 1.125em;
   border-radius: 20px;
+  cursor: pointer;
   margin-top: 11px;
-  transition: background-color .2s ease, color .2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease;
 }
 
-.bonus-card__wrapper2 button:hover {
+.bonus-card__wrapper2 button:hover,
+.bonus-card__wrapper2 button:focus {
   background-color: #ffffff;
   color: #000000;
+}
+
+.bonus-card__wrapper2 button:active {
+  background-color: #f0f0f0;
+  color: #000000;
+  transform: scale(0.96);
 }
 
 @media(max-width: 1024px) {
@@ -61,7 +68,7 @@
   .bonus-card__wrapper2 h2 {
     font-size: var(--fs-400);
   }
-  
+
   .bonus-card__wrapper2 p {
     font-size: var(--fs-200);
     max-width: 20ch;

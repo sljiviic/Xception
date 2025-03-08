@@ -52,7 +52,7 @@ const Navbar = ({ isOpen, toggleDropdown }) => {
         <li><a href="#">GIVEAWAYS</a></li>
         <li><a href="#">BONUSES</a></li>
         <li><a href="#">LEADERBOARD</a></li>
-        <hr className="divider" />
+        <li className="divider"><div></div></li>
         <li className='dropdown-menu_resources'>
           <a href="#"><span>100</span><img src={iconCoins} alt="Coins icon" /></a>
           <a href="#"><span>72</span><img src={iconTransit} alt="Transit icon" /></a>

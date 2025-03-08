@@ -18,8 +18,6 @@ const Footer = () => {
           />
         </a>
 
-
-
         <div className="footer__top__col nav">
           <div className="footer__top__sub-col">
             <h3>Pages</h3>
@@ -47,15 +45,11 @@ const Footer = () => {
           </div>
         </div>
 
-
-
         <div className="footer__top__col socials">
           <h3>STAY CONNECTED</h3>
           <SocialMediaLinks className="social-links--small" />
         </div>
       </div>
-
-
 
       <div className="footer__bottom">
         <p>Betting is for 18+ individuals only. Gamble responsibly. Ensure you understand the risks involved and seek help if needed. Participation is at your own risk. Terms and conditions apply.</p>
