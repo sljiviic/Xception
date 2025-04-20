@@ -1,0 +1,94 @@
+/* Common card styles */
+.card {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.imageWrapper {
+  justify-self: stretch;
+  width: 100%;
+}
+
+.image {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.body {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
+.footer {
+  width: 100%;
+  max-width: 400px;
+}
+
+/* There are primary and secondary variants. */
+/* The primary variant is horizontal, and its content has one column. */
+/* The secondary variant is vertical, and its content has two columns. */
+
+/* Primary variant */
+.card.primary {
+  grid-template-columns: repeat(auto-fit, minmax(min(229px, 100%), 1fr));
+}
+
+
+@media (min-width: 767px) {
+
+  /* Secondary variant */
+  .card.secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .card.secondary .imageWrapper,
+  .card.secondary .content {
+    width: 100%;
+  }
+
+  .card.secondary .content {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-inline: 0.6rem;
+  }
+
+  .card.secondary .main {
+    flex: 2;
+  }
+
+  .card.secondary .footer {
+    flex: 1;
+    max-width: fit-content;
+  }
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: var(--text-lg);
+  }
+
+  .body {
+    font-size: var(--text-sm);
+  }
+}

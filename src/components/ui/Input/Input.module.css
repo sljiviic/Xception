@@ -1,0 +1,61 @@
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  margin-bottom: 1.4rem;
+}
+
+.label {
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-primary);
+}
+
+.input {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  padding: 0.625em 0.75em;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  outline: none;
+  border-radius: var(--border-radius);
+  transition: border 0.2s ease;
+}
+
+.input.error {
+  border-color: var(--color-error);
+}
+
+.errorText {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--leading-normal);
+  color: var(--color-text-error);
+  margin-top: -5px;
+}
+
+/* label sizes */
+.medium {
+  font-size: var(--text-lg);
+}
+
+.large {
+  font-size: var(--text-xl);
+}
+
+/* Removing the increment and decrement buttons of input type 'number' */
+/* Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}

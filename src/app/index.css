@@ -1,0 +1,124 @@
+/* variables */
+:root {
+  /* === Typography === */
+  /* Font families */
+  --font-primary: 'Goldman', sans-serif;
+
+  /* Font weights */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  /* Font sizes - 16px base */
+  /*12px*/
+  --text-xs: 0.75rem;
+  /*14px*/
+  --text-sm: 0.875rem;
+  /*16px*/
+  --text-base: 1rem;
+  /*18px*/
+  --text-lg: 1.125rem;
+  /*20px*/
+  --text-xl: 1.25rem;
+  /*24px*/
+  --text-2xl: 1.5rem;
+  /*30px*/
+  --text-3xl: 1.875rem;
+  /*36px*/
+  --text-4xl: 2.25rem;
+  /*40px*/
+  --text-5xl: 2.5rem;
+
+  /* Line heights */
+  --leading-tight: 1.1;
+  --leading-normal: 1.4;
+  --leading-relaxed: 1.6;
+
+  /* Letter spacing */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+
+  /* === Color Palette === */
+  /* Backgrounds */
+  --color-bg-primary: #010101;
+  --color-bg-secondary: #111111;
+  --color-bg-tertiary: #ffffff;
+
+  /* Text colors */
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.8);
+  --color-text-error: #ff0000;
+
+  /* Accent / Primary action */
+  --color-accent: #ff4106;
+
+  /* Status / Feedback */
+  --color-error: #ff0000;
+
+  /* === Border === */
+  --border-radius: 20px;
+}
+
+/* resets */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* global styling */
+html {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+}
+
+body {
+  position: relative;
+  background-color: var(--color-bg-primary);
+  width: min(1404px, 100% - clamp(10px, 4vw, 258px) * 2);
+  margin: 0 auto;
+  margin-top: clamp(10px, 1.66vw, 32px);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input {
+  font-family: var(--font-primary);
+}
+
+/* utility classes */
+.flex-col {
+  flex-direction: column;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.margin-0 {
+  margin: 0;
+}
+
+.margin-top {
+  margin-top: 1.2rem;
+}

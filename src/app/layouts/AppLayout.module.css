@@ -1,0 +1,9 @@
+.main {
+  margin: calc(2rem + 80px) 0;
+}
+
+@media (max-width: 1067px) {
+  .main {
+    margin: calc(2rem + 65px) 0;
+  }
+}

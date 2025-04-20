@@ -1,0 +1,74 @@
+/* base button/anchor styles */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--leading-tight);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: 
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid transparent;
+  appearance: none;
+  user-select: none;
+}
+
+a.button {
+  text-decoration: none;
+}
+
+/* variants */
+.primary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 2px solid #ffffff;
+}
+
+.primary:hover {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-bg-primary);
+}
+
+.primary:active {
+  background-color: #f3f3f3;
+  transform: scale(0.98);
+}
+
+/* disabled state - works for both elements */
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none; /* disables all interactions */
+}
+
+/* sizes */
+.small {
+  font-size: var(--text-base);
+  padding: 1em 1.6em;
+  min-width: min-content;
+}
+
+.medium {
+  font-size: var(--text-base);
+  padding: 0.7em 3em;
+}
+
+.large {
+  font-size: var(--text-lg);
+  padding: 0.7em 3em;
+}
+
+@media (max-width: 767px) {
+  .medium {
+    padding: 1.2em 1em;
+  }
+  
+  .large {
+    padding: 1.2em 1em;
+  }
+}

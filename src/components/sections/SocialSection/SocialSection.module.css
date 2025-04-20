@@ -1,0 +1,51 @@
+.wrapper {
+  width: 100%;
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.socials a {
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.socials a:hover {
+  opacity: 0.8;
+  transform: scale(0.99);
+}
+
+.socials.medium {
+  gap: 1.5rem;
+}
+
+.socials.small {
+  gap: 0.5rem;
+}
+
+.socials.medium a {
+  width: 70px;
+}
+
+.socials.small a {
+  width: 50px;
+}
+
+@media (max-width: 767px) {
+  .socials.medium {
+    gap: 1rem;
+  }
+
+  .socials.small {
+    gap: 0.5rem;
+  }
+
+  .socials.medium a {
+    width: 50px;
+  }
+}

@@ -1,0 +1,27 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  width: fit-content;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  line-height: var(--leading-tight);
+}
+
+.subtitle {
+  margin: 0.25rem 0 0 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+}
+
+.content {
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  align-self: center;
+  /* added */
+  width: 100%;
+}
