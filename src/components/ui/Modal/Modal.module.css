@@ -33,6 +33,7 @@
   display: flex;
   flex-direction: column;
   margin: 1.8rem 0;
+  padding-block: 0.5rem;
   overflow-y: auto;
 }
 
@@ -60,10 +61,21 @@
   line-height: var(--leading-tight);
 }
 
-.error-text {
-  margin-bottom: 0.5rem;
+.errorText {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+  /*  */
+  
   color: var(--color-text-error);
   font-size: var(--text-sm);
+}
+
+.errorText.visible {
+  max-height: 22.5px;
+  margin-bottom: 0.5rem;
+  opacity: 1;
 }
 
 .footer {

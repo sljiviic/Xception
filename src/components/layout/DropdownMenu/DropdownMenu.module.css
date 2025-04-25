@@ -5,12 +5,12 @@
   flex-direction: column;
   position: absolute;
   right: 0;
-  top: 64px;
+  top: 68px;
   width: 300px;
   height: 0;
   background-color: var(--color-bg-primary);
   font-size: var(--text-lg);
-  border-radius: 0 0 var(--border-radius) var(--border-radius);
+  border-radius: var(--border-radius);
   overflow: hidden;
   z-index: 10;
   transition: height .2s ease

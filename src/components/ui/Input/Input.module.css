@@ -5,7 +5,7 @@
   align-items: center;
   gap: 0.7rem;
   width: 100%;
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.5rem;
 }
 
 .label {
@@ -22,7 +22,7 @@
   border: 2px solid #ffffff;
   outline: none;
   border-radius: var(--border-radius);
-  transition: border 0.2s ease;
+  transition: border .3s ease;
 }
 
 .input.error {
@@ -30,11 +30,23 @@
 }
 
 .errorText {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-10px);
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  /*  */
+  margin-top: -5px;
   font-size: var(--text-base);
   font-weight: var(--font-weight-regular);
   line-height: var(--leading-normal);
   color: var(--color-text-error);
-  margin-top: -5px;
+}
+
+.errorText.visible {
+  max-height: 22.5px;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* label sizes */

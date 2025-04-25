@@ -5,15 +5,8 @@ const Input = ({
   label,
   labelSize = 'medium',
   name,
-  type = 'text',
-  value,
-  onChange,
-  placeholder = '',
-  required = false,
   error = '',
   className,
-  wrapperClassName,
-  ref,
   ...props
 }) => {
   const inputClass = clsx(
@@ -22,37 +15,31 @@ const Input = ({
     className
   )
 
-  const wrapperCalss = clsx(
-    classes.wrapper,
-    wrapperClassName
-  )
-
   const labelClass = clsx(
     classes.label,
     classes[labelSize]
   )
 
+  const errorClass = clsx(
+    classes.errorText,
+    { [classes.visible]: !!error }
+  )
+
   return (
-    <div className={wrapperCalss}>
+    <div className={classes.wrapper}>
       {label && (
         <label htmlFor={name} className={labelClass}>
           {label}
         </label>
       )}
       <input
-        ref={ref}
         id={name}
         name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
         className={inputClass}
-        placeholder={placeholder}
-        required={required}
         aria-label={label}
         {...props}
       />
-      {error && <div className={classes.errorText}>{error}</div>}
+      <div className={errorClass}>{error}</div>
     </div>
   )
 }

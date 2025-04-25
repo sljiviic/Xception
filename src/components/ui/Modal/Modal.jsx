@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import classes from './Modal.module.css'
+import clsx from 'clsx'
 
 const Modal = ({
   isOpen,
@@ -28,6 +29,11 @@ const Modal = ({
 
   if (!isOpen) return null
 
+  const errorClass = clsx(
+    classes.errorText,
+    { [classes.visible]: !!error }
+  )
+
   return ReactDOM.createPortal(
     <div className={classes.backdrop} onClick={onClose}>
       <div
@@ -39,7 +45,7 @@ const Modal = ({
       >
         {title && <h2 className={classes.title}>{title}</h2>}
         <div className={classes.content}>{children}</div>
-        {error && <p className={classes['error-text']}>{error}</p>}
+        <div className={errorClass}>{error}</div>
         {footer && <div className={classes.footer}>{footer}</div>}
       </div>
     </div>,
