@@ -27,7 +27,7 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
       <Input
-        label="Username"
+        label='Username'
         {...register('username', {
           required: 'Username is required',
           minLength: {
@@ -36,13 +36,13 @@ const RegisterForm = () => {
           },
         })}
         error={errors.username?.message}
-        autoComplete="username"
+        autoComplete='username'
         className={classes.input}
       />
 
       <Input
-        label="Email"
-        type="email"
+        label='Email'
+        type='email'
         {...register('email', {
           required: 'Email is required',
           pattern: {
@@ -51,13 +51,13 @@ const RegisterForm = () => {
           },
         })}
         error={errors.email?.message}
-        autoComplete="email"
+        autoComplete='email'
         className={classes.input}
       />
 
       <Input
-        label="Password"
-        type="password"
+        label='Password'
+        type='password'
         {...register('password', {
           required: 'Password is required',
           minLength: {
@@ -66,34 +66,34 @@ const RegisterForm = () => {
           },
         })}
         error={errors.password?.message}
-        autoComplete="new-password"
+        autoComplete='new-password'
         className={classes.input}
       />
 
       <Input
-        label="Confirm Password"
-        type="password"
+        label='Confirm Password'
+        type='password'
         {...register('confirmPassword', {
           required: 'Please confirm your password',
           validate: (value) =>
             value === password || 'Passwords do not match',
         })}
         error={errors.confirmPassword?.message}
-        autoComplete="new-password"
+        autoComplete='new-password'
         className={classes.input}
       />
 
       <Button
-        type="submit"
-        variant="primary"
-        size="medium"
+        type='submit'
+        variant='primary'
+        size='medium'
         disabled={isLoading}
         className={classes.button}
       >
         {isLoading ? (
           <>
             <span style={{ marginRight: '8px' }}>
-              <i class="fa fa-circle-o-notch fa-spin"></i>
+              <i className='fa fa-circle-o-notch fa-spin'></i>
             </span>
             Registering
           </>
@@ -102,7 +102,7 @@ const RegisterForm = () => {
         )}
       </Button>
     </form>
-  );
+  )
 }
 
 export default RegisterForm

@@ -83,7 +83,7 @@ axios.interceptors.request.use(
     const accessToken = useAuthStore.getState().accessToken
 
     if (accessToken) {
-      config.headers = config.headers || {};
+      config.headers = config.headers || {}
       config.headers.Authorization = `Bearer ${accessToken}`
     }
     return config

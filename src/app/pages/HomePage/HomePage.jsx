@@ -1,16 +1,17 @@
 import classes from './HomePage.module.css'
-import hero from '@/assets/hero.svg'
 import BonusCard from '@/features/bonuses/components/BonusCard/BonusCard'
-
-import bonusImage from '@/assets/bonus-image.svg'
 import GiveawayScroller from '@/features/giveaways/components/GiveawayScroller/GiveawayScroller'
-import image from '@/assets/test.svg'
-import image2 from '@/assets/test2.png'
 import Giveaway from '@/features/giveaways/components/Giveaway/Giveaway'
 import SocialSection from '@/components/sections/SocialSection/SocialSection'
 
-const HomePage = () => {
+import hero from '@/assets/hero.svg'
+import bonusImage from '@/assets/bonus-image.svg'
+import image from '@/assets/test.svg'
+import image2 from '@/assets/test2.png'
 
+// The look of the page is done but other things are still in progress
+
+const HomePage = () => {
   return (
     <>
       <a
@@ -20,7 +21,7 @@ const HomePage = () => {
       >
         <img
           src={hero}
-          alt="A hero image"
+          alt='A hero image'
         />
       </a>
       <div className={classes.bonusCardWrapper}>
@@ -53,13 +54,13 @@ const HomePage = () => {
         <GiveawayScroller
           title='Daily free drops (~2$)'
           content={[
-            { img: image, alt: "A drop you don't want to miss", id: "1" },
-            { img: image, alt: "A drop you don't want to miss", id: "2" },
-            { img: image, alt: "A drop you don't want to miss", id: "3" },
-            { img: image, alt: "A drop you don't want to miss", id: "4" },
-            { img: image, alt: "A drop you don't want to miss", id: "5" },
-            { img: image, alt: "A drop you don't want to miss", id: "6" },
-            { img: image, alt: "A drop you don't want to miss", id: "7" },
+            { img: image, alt: 'A drop you dont want to miss', id: '1' },
+            { img: image, alt: 'A drop you dont want to miss', id: '2' },
+            { img: image, alt: 'A drop you dont want to miss', id: '3' },
+            { img: image, alt: 'A drop you dont want to miss', id: '4' },
+            { img: image, alt: 'A drop you dont want to miss', id: '5' },
+            { img: image, alt: 'A drop you dont want to miss', id: '6' },
+            { img: image, alt: 'A drop you dont want to miss', id: '7' },
           ]}
         />
       </div>
@@ -95,7 +96,7 @@ const HomePage = () => {
       >
         <img
           src={hero}
-          alt="a Promo image"
+          alt='a Promo image'
         />
       </a>
       <a
@@ -105,7 +106,7 @@ const HomePage = () => {
       >
         <img
           src={hero}
-          alt="a Promo image"
+          alt='a Promo image'
         />
       </a>
       </div>

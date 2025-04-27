@@ -7,8 +7,8 @@ import Footer from '@/components/layout/Footer/Footer'
 
 const AppLayout = () => {
   // useEffect(() => {
-  //   useAuthStore.getState().initializeAuth();
-  // }, []);
+  //   useAuthStore.getState().initializeAuth()
+  // }, [])
 
   return (
     <div className={classes.wrapper}>

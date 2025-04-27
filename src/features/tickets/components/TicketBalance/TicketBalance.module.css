@@ -1,0 +1,45 @@
+.balancesWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ticketItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-text-primary);
+  transition: color .2s ease;
+}
+
+.ticketAmount {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  color: inherit;
+}
+
+.ticketIcon {
+  max-width: 25px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.plusIcon {
+  max-width: 12px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+}
+
+.ticketItemButton {
+  background: none;
+  border: none;
+}
+
+.ticketItemButton .ticketItem:hover {
+  color: var(--color-accent);
+  cursor: pointer;
+}

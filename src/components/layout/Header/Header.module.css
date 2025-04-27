@@ -69,20 +69,6 @@
   font-size: var(--text-lg);
 }
 
-.balanceWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12.4px;
-}
-
-.balanceWrapper a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2.48px;
-}
-
 .profileIcon {
   max-height: 25px;
   aspect-ratio: 1 / 1;
@@ -113,7 +99,7 @@
   }
 
   .links,
-  .balanceWrapper {
+  .TicketBalance {
     display: none;
   }
 

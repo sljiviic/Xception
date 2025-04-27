@@ -20,13 +20,13 @@ export const useUser = (requireAuth = false, redirectPath) => {
     initializeAuth: state.initializeAuth,
   }))
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const location = useLocation()
 
   // Initialize auth state on mount
   useEffect(() => {
-    initializeAuth();
-  }, [initializeAuth]);
+    initializeAuth()
+  }, [initializeAuth])
 
   // Handle authentication requirements
   useEffect(() => {
@@ -34,7 +34,7 @@ export const useUser = (requireAuth = false, redirectPath) => {
       navigate(redirectPath || '/login', {
         replace: true,
         state: { from: location.pathname },
-      });
+      })
     }
   }, [
     requireAuth,
@@ -43,12 +43,12 @@ export const useUser = (requireAuth = false, redirectPath) => {
     isLoading,
     navigate,
     location.pathname,
-  ]);
+  ])
 
   return {
     user,
     accessToken,
     isAuthenticated,
     isLoading,
-  };
-};
+  }
+}

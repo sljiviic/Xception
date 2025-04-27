@@ -1,9 +1,8 @@
 import classes from './AuthModal.module.css'
-// import { useState } from "react"
 import { useAuthStore } from '../../stores/useAuthStore'
-import Modal from "@/components/ui/Modal/Modal"
-import LoginForm from "../LoginForm/LoginForm"
-import RegisterForm from "../RegisterForm/RegisterForm"
+import Modal from '@/components/ui/Modal/Modal'
+import LoginForm from '../LoginForm/LoginForm'
+import RegisterForm from '../RegisterForm/RegisterForm'
 import googleIcon from '../../assets/google.svg'
 import steamIcon from '../../assets/steam.svg'
 
@@ -13,7 +12,6 @@ const AuthModal = ({
   onClose,
   defaultView = 'login',
 }) => {
-  // const [currentView, setCurrentView] = useState(defaultView)
   const error = useAuthStore((state) => state.error)
 
   return (

@@ -7,10 +7,11 @@
   line-height: var(--leading-tight);
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: 
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.3s ease;
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    border .2s ease,
+    transform .3s ease;
   text-align: center;
   text-decoration: none;
   border: 2px solid transparent;
@@ -39,11 +40,26 @@ a.button {
   transform: scale(0.98);
 }
 
+.secondary {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border: 2px solid #ffffff;
+}
+
+.secondary:hover {
+  border-color: var(--color-accent);
+}
+
+.secondary:active {
+  transform: scale(0.98);
+}
+
 /* disabled state - works for both elements */
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  pointer-events: none; /* disables all interactions */
+  pointer-events: none;
+  /* disables all interactions */
 }
 
 /* sizes */
@@ -67,7 +83,7 @@ a.button {
   .medium {
     padding: 1.2em 1em;
   }
-  
+
   .large {
     padding: 1.2em 1em;
   }

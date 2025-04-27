@@ -38,7 +38,7 @@ const ImageButtonn = ({
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       tabIndex={!disabled ? -1 : 0}
-      role="button"
+      role='button'
       aria-disabled={disabled}
     >
       {isNew && <div className={classes.badge}>NEW</div>}

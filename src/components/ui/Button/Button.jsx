@@ -1,11 +1,11 @@
-import classes from './Button.module.css';
-import clsx from 'clsx';
+import classes from './Button.module.css'
+import clsx from 'clsx'
 
 const Button = ({
   children,
   as = 'button', // 'button' or 'a'
-  type = 'button', // only used if `as="button"`
-  href, // required if `as="a"`
+  type = 'button', // only used if `as='button'`
+  href, // required if `as='a'`
   onClick,
   variant = 'primary',
   size = 'medium',
@@ -19,7 +19,7 @@ const Button = ({
     classes[size],
     { [classes.disabled]: disabled },
     className
-  );
+  )
 
   // common props for both button and anchor
   const commonProps = {
@@ -29,21 +29,21 @@ const Button = ({
     tabIndex: !disabled ? -1 : 0,
     ['aria-disabled']: disabled,
     ...props,
-  };
+  }
 
   if (as === 'a') {
     return (
       <a href={href} target='_blank' {...commonProps}>
         {children}
       </a>
-    );
+    )
   }
 
   return (
     <button type={type} {...commonProps}>
       {children}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

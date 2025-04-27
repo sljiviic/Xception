@@ -1,6 +1,5 @@
-import axios from "axios"
+import axios from 'axios'
 
-// Custom instance defaults
 const authAxios = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + '/auth',
   timeout: 5000,
