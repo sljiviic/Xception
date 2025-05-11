@@ -19,10 +19,5 @@ export const ticketsApi = {
   awardTickets: async (amount) => {
     const response = await ticketsAxios.post(`/award`, { amount })
     return response.data
-  },
-
-  getTwitchSubRewards: async () => {
-    const response = await ticketsAxios.get('/twitch-rewards')
-    return response.data
   }
 }
