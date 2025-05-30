@@ -1,19 +1,15 @@
-import { useMemo } from "react"
-import { useTasks } from "./useTasks"
+import { useMemo } from 'react'
+import { useTasks } from './useTasks'
 
 export const useMandatoryTasksCompleted = () => {
-  const { mandatory, isLoading } = useTasks();
+  const { mandatoryTasks, isFetchingTasks } = useTasks()
 
   const isAllCompleted = useMemo(() => {
-    // Handle loading or undefined state
-    if (isLoading || !mandatory) return false;
+    if (isFetchingTasks || !mandatoryTasks) return false
+    if (!mandatoryTasks.length) return false
 
-    // Handle empty mandatory tasks case
-    if (mandatory.length === 0) return false;
+    return mandatoryTasks.every(task => task.status === 'COMPLETED')
+  }, [mandatoryTasks, isFetchingTasks])
 
-    // Check completion status
-    return mandatory.every(task => task.status === 'COMPLETED')
-  }, [mandatory, isLoading])
-  
   return isAllCompleted
 }

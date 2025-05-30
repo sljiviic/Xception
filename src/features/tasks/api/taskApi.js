@@ -6,33 +6,28 @@ const taskAxios = axios.create({
 })
 
 export const taskApi = {
-  // Get all tasks (with an optional query param)
   getAll: async (query = '') => {
-    const response = await taskAxios.get(query ? `?${query}` : '/')
+    const response = await taskAxios.get(query)
     return response.data
   },
 
-  // Get a task by ID
-  getById: async (taskId) => {
-    const response = await taskAxios.get(`/${taskId}`);
+  getById: async (id) => {
+    const response = await taskAxios.get(`/${id}`)
     return response.data
   },
 
-  // Create a new task
   create: async (taskData) => {
-    const response = await taskAxios.post('/', taskData);
+    const response = await taskAxios.post('/', taskData)
     return response.data
   },
 
-  // Update an existing task
-  update: async (taskId, taskData) => {
-    const response = await taskAxios.put(`/${taskId}`, taskData);
+  update: async (id, taskData) => {
+    const response = await taskAxios.put(`/${id}`, taskData)
     return response.data
   },
 
-  // Delete a task
-  delete: async (taskId) => {
-    const response = await taskAxios.delete(`/${taskId}`);
+  delete: async (id) => {
+    const response = await taskAxios.delete(`/${id}`)
     return response.data
   }
 }

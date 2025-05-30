@@ -14,13 +14,15 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoading: true, error: null })
     try {
       const { user, accessToken } = await authApi.login(userData)
-      set({ user, accessToken, isAuthenticated: true, isLoading: false })
+      set({ user, accessToken, isAuthenticated: true })
     } catch (error) {
       set({
         error: error instanceof Error ? error : new Error('Login failed'),
         isLoading: false
       })
       throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
 
@@ -29,13 +31,15 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoading: true, error: null })
     try {
       const { user, accessToken } = await authApi.register(userData)
-      set({ user, accessToken, isAuthenticated: true, isLoading: false })
+      set({ user, accessToken, isAuthenticated: true })
     } catch (error) {
       set({
         error: error instanceof Error ? error : new Error('Registration failed'),
         isLoading: false
       })
       throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
 
@@ -56,13 +60,14 @@ export const useAuthStore = create((set, get) => ({
       const { accessToken } = await authApi.refreshToken()
       set({ accessToken })
       return accessToken
-    } catch (error) {
+    } catch {
       get().logout()
-      throw error
     }
   },
 
   initializeAuth: async () => {
+    if (get().isAuthenticated) return
+
     try {
       const { accessToken } = await get().refreshToken()
       set({ accessToken, isAuthenticated: !!accessToken })

@@ -11,7 +11,8 @@ const Modal = ({
   title,
   children,
   error,
-  footer
+  footer,
+  className
 }) => {
   const modalRef = useRef(null)
 
@@ -39,7 +40,7 @@ const Modal = ({
         role='dialog'
         aria-modal='true'
         aria-label={`modal-${title}`}
-        className={classes.modal}
+        className={clsx(classes.modal, className)}
         onClick={e => e.stopPropagation()}
       >
         {title && <h2 className={classes.title}>{title}</h2>}

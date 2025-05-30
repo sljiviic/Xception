@@ -1,8 +1,8 @@
-/* base button/anchor styles */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.2rem;
   font-weight: var(--font-weight-bold);
   line-height: var(--leading-tight);
   border-radius: var(--border-radius);
@@ -41,16 +41,32 @@ a.button {
 }
 
 .secondary {
-  background-color: transparent;
+  background-color: var(--color-accent);
   color: var(--color-text-primary);
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-accent);
 }
 
 .secondary:hover {
-  border-color: var(--color-accent);
+  background-color: transparent;
 }
 
 .secondary:active {
+  background-color: transparent;
+  transform: scale(0.98);
+}
+
+.error {
+  background-color: var(--color-text-error);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-text-error);
+}
+
+.error:hover {
+  background-color: var(--color-bg-secondary);
+}
+
+.error:active {
+  background-color: var(--color-bg-secondary);
   transform: scale(0.98);
 }
 
@@ -59,32 +75,21 @@ a.button {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
-  /* disables all interactions */
 }
 
 /* sizes */
 .small {
   font-size: var(--text-base);
-  padding: 1em 1.6em;
+  padding: 1.4em 1.2em;
   min-width: min-content;
 }
 
 .medium {
   font-size: var(--text-base);
-  padding: 0.7em 3em;
+  padding: 0.6em 3em;
 }
 
 .large {
   font-size: var(--text-lg);
-  padding: 0.7em 3em;
-}
-
-@media (max-width: 767px) {
-  .medium {
-    padding: 1.2em 1em;
-  }
-
-  .large {
-    padding: 1.2em 1em;
-  }
+  padding: 0.6em 3em;
 }

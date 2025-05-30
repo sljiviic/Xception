@@ -1,15 +1,13 @@
 import classes from './LoginForm.module.css'
 import { useForm } from 'react-hook-form'
 import { useLogin } from '../../hooks/useLogin'
-import { useAuthStore } from '../../stores/useAuthStore'
 import Button from '@/components/ui/Button/Button'
 import Input from '@/components/ui/Input/Input'
 
 
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
-  const { login } = useLogin()
-  const isLoading = useAuthStore((state) => state.isLoading)
+  const { login, isLoading } = useLogin()
 
   const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 

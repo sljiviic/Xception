@@ -6,16 +6,16 @@ export const useTicketConversion = () => {
     regularTickets,
     conversionRate,
     convertToSpecial,
-    isLoading
+    isConvertingToSpecial
   } = useTickets()
 
   const [amount, setAmount] = useState('1')
   const [inputError, setInputError] = useState('')
-  const maxSpecial = Math.floor(regularTickets / conversionRate)
 
   const handleConvert = async (e) => {
     e?.preventDefault()
     const numAmount = Number(amount)
+    const maxSpecial = Math.floor(regularTickets / conversionRate)
 
     if (isNaN(numAmount)) {
       setInputError('Please enter a valid amount')
@@ -28,12 +28,11 @@ export const useTicketConversion = () => {
     }
 
     if (numAmount > maxSpecial) {
-      setInputError(`Maximum ${maxSpecial} special tickets available`)
+      setInputError('Insufficient ticket balance')
       return false
     }
 
-    const success = await convertToSpecial(numAmount)
-    return success
+    await convertToSpecial(numAmount)
   }
 
   const handleAmountChange = (value) => {
@@ -48,21 +47,13 @@ export const useTicketConversion = () => {
     setInputError('')
   }
 
-  const numAmount = Number(amount) || 0
-  const cost = numAmount * conversionRate
-  const hasEnoughTickets = cost <= regularTickets
-
   return {
     amount,
     inputError,
-    cost,
-    hasEnoughTickets,
-    maxSpecial,
-    isLoading,
+    cost: conversionRate * Number(amount),
+    isLoading: isConvertingToSpecial,
     handleConvert,
     handleAmountChange,
     resetConversion,
-    setAmount,
-    setInputError
   }
 }

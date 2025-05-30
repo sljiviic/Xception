@@ -2,122 +2,69 @@ import { create } from 'zustand'
 import { taskUserApi } from '../api/taskUserApi'
 
 export const useTaskUserStore = create((set, get) => ({
-  userTasks: [], //This is ment be an array of objects (userTasks)
-  completedTasks: new Set(), //Set of IDs
-  isLoading: false,
-  error: null,
+  userTasks: [],
+  completedTasks: new Set(),
+  isFetchingUserTasks: false,
+
 
   fetchUserTasks: async (query = '') => {
-    if (typeof query !== 'string') {
-      set({ error: new Error('Invalid query parameter') })
-      return
-    }
+    if (get().isFetchingUserTasks) return
 
-    set({ isLoading: true, error: null })
+    set({ isFetchingUserTasks: true })
     try {
-      const data = await taskUserApi.getAll(query)
+      const userTasks = await taskUserApi.getAll(query)
       const completed = new Set(
-        data
+        userTasks
           .filter(tu => tu.status === 'COMPLETED')
           .map(tu => tu.id)
       )
       set({
-        userTasks: data,
-        completedTasks: completed
+        userTasks,
+        completedTasks: completed,
+        isFetchingUserTasks: false
       })
     } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Failed to fetch user tasks')
-      })
+      set({ isFetchingUserTasks: false })
       throw error
-    } finally {
-      set({ isLoading: false })
-    }
-  },
-
-  getUserTaskById: async (taskUserId) => {
-    set({ isLoading: true, error: null })
-    try {
-      const data = await taskUserApi.getById(taskUserId)
-      return data
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Failed to fetch the user task')
-      })
-      throw error
-    } finally {
-      set({ isLoading: false })
     }
   },
 
   createUserTask: async (taskUserData) => {
-    set({ isLoading: true, error: null })
-    try {
-      const data = await taskUserApi.create(taskUserData)
-      set(state => ({
-        userTasks: [...state.userTasks, data]
-      }))
-
-      return data
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Failed to start the user task')
-      })
-      throw error
-    } finally {
-      set({ isLoading: false })
-    }
+    const newUserTask = await taskUserApi.create(taskUserData)
+    set(state => ({
+      userTasks: [...state.userTasks, newUserTask]
+    }))
+    return newUserTask
   },
 
   updateUserTask: async (taskUserId, taskUserData) => {
-    set({ isLoading: true, error: null })
-    try {
-      const data = await taskUserApi.update(taskUserId, taskUserData)
+    const updatedUserTask = await taskUserApi.update(taskUserId, taskUserData)
 
-      set(state => {
-        const completed = new Set(state.completedTasks)
-        if (data.status === 'COMPLETED') {
-          completed.add(taskUserId)
-        } else {
-          completed.delete(taskUserId)
-        }
-        return {
-          userTasks: state.userTasks.map(tu => tu.id === taskUserId ? data : tu),
-          completedTasks: completed
-        }
-      })
-
-      return data
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Task completion failed')
-      })
-      throw error
-    } finally {
-      set({ isLoading: false })
-    }
+    set(state => {
+      const completed = new Set(state.completedTasks)
+      if (updatedUserTask.status === 'COMPLETED') {
+        completed.add(taskUserId)
+      } else {
+        completed.delete(taskUserId)
+      }
+      return {
+        userTasks: state.userTasks.map(tu => tu.id === taskUserId ? updatedUserTask : tu),
+        completedTasks: completed
+      }
+    })
+    return updatedUserTask
   },
 
   deleteUserTask: async (taskUserId) => {
-    set({ isLoading: true, error: null })
-    try {
-      await taskUserApi.delete(taskUserId)
-      set(state => {
-        const completed = new Set(state.completedTasks)
-        completed.delete(taskUserId)
-        return {
-          userTasks: state.userTasks.filter(tu => tu.id !== taskUserId),
-          completedTasks: completed
-        }
-      })
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('User task deletion failed')
-      })
-      throw error
-    } finally {
-      set({ isLoading: false })
-    }
+    await taskUserApi.delete(taskUserId)
+    set(state => {
+      const completed = new Set(state.completedTasks)
+      completed.delete(taskUserId)
+      return {
+        userTasks: state.userTasks.filter(tu => tu.id !== taskUserId),
+        completedTasks: completed
+      }
+    })
   },
 
   getIsTaskCompleted: (taskUserId) => {

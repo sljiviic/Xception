@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
+import { useTicketConversion } from '../../hooks/useTicketConversion'
 import clsx from 'clsx'
 import Modal from '@/components/ui/Modal/Modal'
 import Input from '@/components/ui/Input/Input'
 import Button from '@/components/ui/Button/Button'
-import { useTicketConversion } from '../../hooks/useTicketConversion'
 import classes from './TicketConversionModal.module.css'
 import ticketIcon from '../../assets/ticketspecial.svg'
 import twitchIcon from '../../assets/twitch.svg'
@@ -14,7 +14,6 @@ const TicketConversionModal = ({ isOpen, onClose }) => {
     amount,
     inputError,
     cost,
-    hasEnoughTickets,
     isLoading,
     handleConvert,
     handleAmountChange,
@@ -65,7 +64,7 @@ const TicketConversionModal = ({ isOpen, onClose }) => {
           type='submit'
           variant='secondary'
           size='medium'
-          disabled={isLoading || !amount || !hasEnoughTickets}
+          disabled={isLoading || !amount || inputError}
           className={classes.button}
         >
           {isLoading ? (
@@ -89,9 +88,9 @@ const TicketConversionModal = ({ isOpen, onClose }) => {
 
         <div className={clsx(
           classes.errorText,
-          { [classes.visible]: inputError || (!hasEnoughTickets && amount !== '') }
+          { [classes.visible]: inputError }
         )}>
-          {inputError || (!hasEnoughTickets && amount !== '' ? 'Not enough regular tickets' : '')}
+          {inputError}
         </div>
       </form>
     </Modal>

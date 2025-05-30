@@ -116,3 +116,9 @@
     padding-bottom: 0.3rem;
   }
 }
+
+@media(max-width: 480px) {
+    .navigation {
+    justify-content: center;
+  }
+}

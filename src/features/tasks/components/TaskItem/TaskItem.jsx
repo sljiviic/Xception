@@ -1,50 +1,109 @@
-import Button from "@/components/ui/Button/Button"
+import { useState } from 'react'
+import clsx from 'clsx'
 import classes from './TaskItem.module.css'
-import clsx from "clsx";
-import { useTaskRightSide } from '../../hooks/useTaskRightSide';
-import { useTaskClick } from '../../hooks/useTaskClick';
+import { useTaskStatus } from '../../hooks/useTaskStatus'
+import { useProtectedClick } from '@/features/auth'
+import { useTaskClick } from '../../hooks/useTaskClick'
 
-export const TaskItem = ({ task, className = '', ...props }) => {
-  const { type, content } = useTaskRightSide(task);
-  const handleTaskClick = useTaskClick(task);
+const TaskItem = ({ task, className = '', ...props }) => {
+  const [isHovering, setIsHovering] = useState(false)
+  const {
+    type,
+    content,
+    isCompleted,
+    reward
+  } = useTaskStatus(task)
+  const { handleTaskClick, isLoading } = useTaskClick(task)
+  const handleProtectedClick = useProtectedClick()
 
-  const rightSideContent = (() => {
+  // Determines what to show on the right side
+  const renderRightSideContent = () => {
+    if (isLoading) {
+      return <div className={classes.loadingSpinner} />
+    }
     switch (type) {
       case 'reward':
-        return task.type === 'daily'
-          ? <span>{`+${content.base} (+${content.bonus})`}</span>
-          : <span>{`+${content.base}`}</span>
+        return (
+          <>
+            <span className={classes.rewardText}>
+              +{reward.base}
+              {reward.bonus > 0 && (
+                <span className={classes.bonusText}> (+{reward.bonus})</span>
+              )}
+            </span>
+            <div className={classes.slider}></div>
+          </>
+        )
       case 'check':
-        return <div>{content}</div>;
+        return (
+          <div className={classes.slider}>
+            <i
+              className={clsx(
+                'fa-solid',
+                'fa-check',
+                classes.checkIcon,
+                { [classes.show]: !isHovering || task.type === 'mandatory' }
+              )}
+            ></i>
+          </div>
+        )
       case 'countdown':
-        return <span>{`${content.hours}:${content.minutes}:${content.seconds}`}</span>;
+        return (
+          <div className={classes.slider}>
+            <span className={clsx(classes.countdown, {
+              [classes.show]: isHovering
+            })}>
+              {content}
+            </span>
+            <i
+              className={clsx(
+                'fa-solid',
+                'fa-check',
+                classes.checkIcon,
+                { [classes.show]: !isHovering }
+              )}
+            ></i>
+          </div>
+        )
+      case 'error':
       default:
-        return <span>{content || 'Task unavailable'}</span>;
+        return (
+          <>
+            <span className={classes.errorText}>{content}</span>
+            <div className={classes.slider}></div>
+          </>
+        )
     }
-  })()
+  }
 
   return (
-    <Button
-      as='a'
+    <a
       href='#'
-      onClick={handleTaskClick}
-      variant='primary'
-      size='medium'
+      onClick={handleProtectedClick(handleTaskClick)}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       className={clsx(
         classes.taskItem,
         classes[task.type],
+        {
+          [classes.completed]: isCompleted,
+          [classes.loading]: isLoading
+        },
         className
       )}
+      aria-busy={isLoading}
+      aria-disabled={isLoading || isCompleted}
       {...props}
     >
-      <div className={classes.content}>
-        <div className={classes.leftSide}>
-          <span className={classes.title}>{task.title}</span>
-        </div>
-        <div className={classes.rightSide}>
-          {rightSideContent}
-        </div>
+      <div className={classes.leftSide}>
+        <span className={classes.title}>{task.title}</span>
       </div>
-    </Button>
-  );
-};
+
+      <div className={classes.rightSide}>
+        {renderRightSideContent()}
+      </div>
+    </a>
+  )
+}
+
+export default TaskItem

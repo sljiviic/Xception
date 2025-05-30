@@ -6,33 +6,28 @@ const taskUserAxios = axios.create({
 })
 
 export const taskUserApi = {
-  // Get all taskUsers (with an optional query param)
   getAll: async (query = '') => {
-    const response = await taskUserAxios.get(query ? `?${query}` : '')
+    const response = await taskUserAxios.get(query)
     return response.data
   },
 
-  // Get a specific taskUser by ID
-  getById: async (taskUserId) => {
-    const response = await taskUserAxios.get(`/${taskUserId}`)
+  getById: async (id) => {
+    const response = await taskUserAxios.get(`/${id}`)
     return response.data
   },
 
-  // Create a taskUser (user starts or claims a task)
   create: async (taskUserData) => {
     const response = await taskUserAxios.post('/', taskUserData)
     return response.data
   },
 
-  // Update a taskUser (mark as completed)
-  update: async (taskUserId, taskUserData) => {
-    const response = await taskUserAxios.put(`/${taskUserId}`, taskUserData)
+  update: async (id, taskUserData) => {
+    const response = await taskUserAxios.put(`/${id}`, taskUserData)
     return response.data
   },
 
-  // Delete a taskUser
-  delete: async (taskUserId) => {
-    const response = await taskUserAxios.delete(`/${taskUserId}`)
+  delete: async (id) => {
+    const response = await taskUserAxios.delete(`/${id}`)
     return response.data
   }
 }

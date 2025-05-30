@@ -12,12 +12,22 @@ export const ticketsApi = {
   },
 
   convertToSpecial: async (amount) => {
-    const response = await ticketsAxios.post(`/convert`, { amount })
+    const response = await ticketsAxios.post('/conversions', { amount })
     return response.data
   },
 
   awardTickets: async (amount) => {
-    const response = await ticketsAxios.post(`/award`, { amount })
+    const response = await ticketsAxios.post('/awards', { amount })
+    return response.data
+  },
+
+  spendTickets: async (amount) => {
+    const response = await ticketsAxios.post(`/regular-spends/`, { amount })
+    return response.data
+  },
+
+  spendSpecialTickets: async (amount) => {
+    const response = await ticketsAxios.post(`/special-spends/`, { amount })
     return response.data
   }
 }

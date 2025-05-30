@@ -1,30 +1,30 @@
-import { useCallback, useRef, useEffect } from 'react';
-import { useTaskUserStore } from '../stores/useTaskUserStore';
+import { useCallback, useRef, useEffect, useState } from 'react'
+import { useTaskUserStore } from '../stores/useTaskUserStore'
 import { useTaskCompletion } from './useTaskCompletion'
-import { useTaskTimerStore } from '../stores/useTaskTimerStore';
+import { useTaskTimerStore } from '../stores/useTaskTimerStore'
 
 export const useTaskClick = (task) => {
   const createUserTask = useTaskUserStore(state => state.createUserTask)
-  const isLoading = useTaskUserStore(state => state.isLoading)
   const getIsExpired = useTaskTimerStore(state => state.getIsExpired)
   const completeUserTask = useTaskCompletion()
   const pendingCompletionRef = useRef(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleTaskClick = useCallback(async (e) => {
     e.preventDefault()
-    if (isLoading) return;
+    if (isLoading) return
 
     try {
-      // Validate task
       if (!task?.id) {
-        throw new Error('Invalid task data');
+        throw new Error('Invalid task data')
       }
 
-      // Check cooldown
-      const isExpired = getIsExpired(task.id);
+      // Return if the daily task's cooldown is still active
+      const isExpired = getIsExpired(task.id)
       if (!isExpired) return
 
       // Create pending task
+      setIsLoading(true)
       const taskUser = await createUserTask({
         taskId: task.id,
         status: 'PENDING'
@@ -32,16 +32,15 @@ export const useTaskClick = (task) => {
 
       // Schedule completion
       const timer = setTimeout(async () => {
-        try {
-          await completeUserTask(taskUser);
-        } catch (error) {
-          console.error('Auto-completion failed:', error);
-        }
-      }, 60000);
+        await completeUserTask(taskUser)
+        setIsLoading(false)
+      }, 60000)
 
       pendingCompletionRef.current = { taskUser, timer }
     } catch (error) {
-      console.error('Task click failed:', error);
+      console.error('Task click failed:', error)
+    } finally {
+      setIsLoading(false)
     }
 
   },
@@ -52,10 +51,10 @@ export const useTaskClick = (task) => {
   useEffect(() => {
     return () => {
       if (pendingCompletionRef.current?.timer) {
-        clearTimeout(pendingCompletionRef.current.timer);
+        clearTimeout(pendingCompletionRef.current.timer)
       }
-    };
-  }, [pendingCompletionRef]);
+    }
+  }, [pendingCompletionRef])
 
-  return handleTaskClick
-};
+  return { handleTaskClick, isLoading }
+}

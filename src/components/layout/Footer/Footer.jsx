@@ -28,9 +28,9 @@ const Footer = () => {
           <div className={classes.navColumn}>
             <h2 className={classes.navTitle}>Papers</h2>
             <ul className={classes.navContent}>
-              <li><Link to='/'>Privacy Policy</Link></li>
-              <li><Link to='/'>T&C</Link></li>
-              <li><Link to='/'>FAQ</Link></li>
+              <li><Link to='/privacy-policy'>Privacy Policy</Link></li>
+              <li><Link to='/terms-and-conditions'>T&C</Link></li>
+              <li><Link to='/faq'>FAQ</Link></li>
             </ul>
           </div>
           <div className={classes.navColumn}>

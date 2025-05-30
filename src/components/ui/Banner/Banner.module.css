@@ -1,0 +1,12 @@
+.banner {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity .2s ease;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.banner:hover {
+  opacity: 0.8;
+}

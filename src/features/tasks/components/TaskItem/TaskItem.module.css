@@ -1,0 +1,77 @@
+.taskItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  padding: 0.6rem 1.2rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  border: 2px solid #777777;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border .2s ease;
+}
+
+.taskItem:hover {
+  border-color: var(--color-accent);
+}
+
+.taskItem.completed:hover,
+.taskItem.loading:hover {
+  border-color: #777777;
+}
+
+.slider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  text-align: center;
+  background-color: var(--color-accent);
+  transition: width .8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.taskItem.completed .slider {
+  width: 100px;
+}
+
+.checkIcon {
+  position: absolute;
+  font-size: var(--text-lg);
+  color: var(--color-text-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.checkIcon.show {
+  opacity: 1;
+}
+
+.countdown {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.countdown.show {
+  opacity: 1;
+}
+
+.loadingSpinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #777777;
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

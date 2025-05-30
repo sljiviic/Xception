@@ -1,0 +1,63 @@
+.leaderboardRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.7rem 1.4rem;
+  border: 2px solid #666666;
+  border-radius: var(--border-radius);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+}
+
+.rank {
+  width: 26px;
+}
+
+.username {
+  width: 150px;
+}
+
+.wager {
+  width: 90px;
+  text-align: left;
+}
+
+.reward {
+  width: 60px;
+  text-align: right;
+}
+
+.currentUser {
+  border: 3px solid var(--color-accent);
+}
+
+@media (max-width: 690px) {
+  .rank {
+    width: 26px;
+  }
+
+  .username {
+    width: 130px;
+  }
+
+  .wager {
+    width: 70px;
+  }
+
+  .reward {
+    width: 50px;
+  }
+}

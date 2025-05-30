@@ -1,0 +1,42 @@
+.giveawayWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 23px;
+  margin: 3rem 0;
+}
+
+@media(min-width: 768px) {
+  .giveawayItem {
+    max-width: 409px;
+  }
+}
+
+@media(max-width: 767px) {
+  .giveawayWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .giveawayWrapper .giveaway1 {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .giveawayWrapper .giveaway2 {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    width: 100%;
+  }
+
+  .giveawayWrapper .giveaway3 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .giveawayWrapper .giveaway3 img {
+    max-height: 200px;
+    border-radius: var(--border-radius);
+  }
+}

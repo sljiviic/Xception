@@ -4,11 +4,12 @@ import { useClickOutside } from '@/hooks/useClickOutside'
 import clsx from 'clsx'
 import classes from './DropdownMenu.module.css'
 import { TicketBalance } from '@/features/tickets'
+import { useAuthStore } from '@/features/auth'
 
 const DropdownMenu = ({ isOpen, onClose }) => {
   const dropdownMenuRef = useRef(null)
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
 
-  // Handle click outside AND escape key
   useClickOutside(dropdownMenuRef, () => {
     if (isOpen) onClose()
   }, isOpen)
@@ -23,10 +24,14 @@ const DropdownMenu = ({ isOpen, onClose }) => {
       <li><Link to='/giveaways' onClick={onClose}>GIVEAWAYS</Link></li>
       <li><Link to='/bonuses' onClick={onClose}>BONUSES</Link></li>
       <li><Link to='leaderboard' onClick={onClose}>LEADERBOARD</Link></li>
-      <li className={classes.divider}><div></div></li>
-      <div className={classes.TicketBalance}>
-        <TicketBalance />
-      </div>
+      {isAuthenticated && (
+        <>
+          <li className={classes.divider}><div></div></li>
+          <div className={classes.TicketBalance}>
+            <TicketBalance />
+          </div>
+        </>
+      )}
     </ul>
   )
 }

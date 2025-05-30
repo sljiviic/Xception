@@ -2,7 +2,7 @@ import classes from './Card.module.css'
 import clsx from 'clsx'
 
 const Card = ({
-  variant = 'primary',
+  variant = 'primary', // primary || secondary
   title,
   image,
   children,

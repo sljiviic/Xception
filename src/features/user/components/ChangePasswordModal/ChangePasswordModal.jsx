@@ -1,34 +1,36 @@
-import { useState } from "react"
+import { useState, useEffect } from 'react'
 import classes from './ChangePasswordModal.module.css'
-import Modal from "@/components/ui/Modal/Modal"
-import Input from "@/components/ui/Input/Input"
-import Button from "@/components/ui/Button/Button"
+import { useUserProfile } from '../../hooks/useUserProfile'
+import Modal from '@/components/ui/Modal/Modal'
+import Input from '@/components/ui/Input/Input'
+import Button from '@/components/ui/Button/Button'
 
-const ChangePasswordModal = () => {
-  const [isOpen, setIsOpen] = useState(true)
+const ChangePasswordModal = ({ isOpen, onClose }) => {
   const [oldPassword, setOldPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
 
-  const handlePasswordChange = e => {
-    e.preventDefault()
-
-    if (newPassword !== confirmPassword) {
-      return setError('New passwords do not match')
+  useEffect(() => {
+    if (!isOpen) {
+      setOldPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
     }
+  }, [isOpen])
 
-    console.log({ oldPassword, newPassword })
-    setError('')
-    setIsOpen(false)
+  const { changePassword, isChangingPassword } = useUserProfile()
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault()
+    await changePassword(newPassword)
   }
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={onClose}
       title='Change Password'
-      error={error}
+      error={newPassword !== confirmPassword ? 'New passwords do not match' : ''}
     >
       <form onSubmit={handlePasswordChange} className={classes.form}>
         <Input
@@ -38,7 +40,8 @@ const ChangePasswordModal = () => {
           value={oldPassword}
           onChange={({ target }) => setOldPassword(target.value)}
           required={true}
-          className='width-full'
+          className={classes.input}
+          wrapperClassName={classes.inputWrapper}
         />
         <Input
           label='New Password'
@@ -47,7 +50,8 @@ const ChangePasswordModal = () => {
           value={newPassword}
           onChange={({ target }) => setNewPassword(target.value)}
           required={true}
-          className='width-full'
+          className={classes.input}
+          wrapperClassName={classes.inputWrapper}
         />
         <Input
           label='Confirm New Password'
@@ -56,15 +60,21 @@ const ChangePasswordModal = () => {
           value={confirmPassword}
           onChange={({ target }) => setConfirmPassword(target.value)}
           required={true}
-          className='width-full'
+          className={classes.input}
+          wrapperClassName={classes.inputWrapper}
         />
         <Button
-          type="submit"
-          variant="primary"
-          size="medium"
-          className='margin-top'
+          type='submit'
+          variant='primary'
+          size='medium'
+          className={classes.button}
+          disabled={isChangingPassword}
         >
-          Confirm
+          {isChangingPassword ? (
+            <i className='fa fa-circle-o-notch fa-spin'></i>
+          ) : (
+            'Confirm'
+          )}
         </Button>
       </form>
     </Modal>

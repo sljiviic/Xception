@@ -1,0 +1,40 @@
+.introSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  height: 320px;
+}
+
+.introTitle {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+}
+
+.introSubtitle {
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  white-space: pre-line;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.bgShadow {
+  position: absolute;
+  width: 200px;
+  box-shadow: 0 0 125px 42px rgba(255, 255, 255, 0.43);
+  z-index: -100;
+}
+
+@media (max-width: 767px) {
+  .introTitle {
+    font-size: var(--text-3xl);
+  }
+
+  .introSubtitle {
+    font-size: var(--text-base);
+  }
+}

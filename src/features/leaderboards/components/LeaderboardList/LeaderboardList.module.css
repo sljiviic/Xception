@@ -1,0 +1,42 @@
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+}
+
+.wager {
+  width: 100px;
+  text-align: center;
+}
+
+.reward {
+  width: 100px;
+  text-align: right;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

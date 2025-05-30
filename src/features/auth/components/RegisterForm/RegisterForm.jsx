@@ -1,7 +1,6 @@
 import classes from './RegisterForm.module.css'
 import { useForm } from 'react-hook-form'
 import { useRegister } from '../../hooks/useRegister'
-import { useAuthStore } from '../../stores/useAuthStore'
 import Button from '@/components/ui/Button/Button'
 import Input from '@/components/ui/Input/Input'
 
@@ -12,8 +11,7 @@ const RegisterForm = () => {
     watch,
     formState: { errors },
   } = useForm()
-  const { register: registerUser } = useRegister()
-  const isLoading = useAuthStore((state) => state.isLoading)
+  const { register: registerUser, isLoading } = useRegister()
   const password = watch('password')
 
   const onSubmit = (data) => {

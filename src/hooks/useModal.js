@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 export const useModal = (ref, isOpen) => {
   const headerRef = useRef(null)
 
-  // scroll locking and preventing from page shifting
+  // Scroll locking and preventing from page shifting
   useEffect(() => {
     headerRef.current = document.querySelector('header')
   }, [])
@@ -32,7 +32,7 @@ export const useModal = (ref, isOpen) => {
   }, [isOpen])
 
 
-  // focus first interactive element when modal opens
+  // Focus first interactive element when modal opens
   useEffect(() => {
     if (isOpen && ref.current) {
       const focusableElements = ref.current.querySelectorAll(
@@ -45,7 +45,7 @@ export const useModal = (ref, isOpen) => {
     }
   }, [ref, isOpen])
 
-  // trap focus inside modal
+  // Trap focus inside modal
   useEffect(() => {
     if (!isOpen) return
 

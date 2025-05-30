@@ -1,70 +1,95 @@
 import { create } from 'zustand'
 import { ticketsApi } from '../api/ticketsApi'
+
 export const useTicketStore = create((set, get) => ({
-  regularTickets: 75,
-  specialTickets: 10,
+  regularTickets: null,
+  specialTickets: null,
   conversionRate: 500,
-  isLoading: false,
-  error: null,
+
+  // Loading states
+  isFetchingBalances: false,
+  isConvertingToSpecial: false,
+  isAwardingTickets: false,
+  isSpendingTickets: false,
 
   fetchBalances: async () => {
-    set({ isLoading: true })
+    if (get().isFetchingBalances) return
+
+    set({ isFetchingBalances: true })
     try {
       const balances = await ticketsApi.getBalances()
       set({
         regularTickets: balances.regular,
         specialTickets: balances.special,
-        isLoading: false,
-        error: null
+        isFetchingBalances: false
       })
     } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Failed to fetch balances'),
-        isLoading: false
-      })
+      set({ isFetchingBalances: false })
       throw error
     }
   },
 
   convertToSpecial: async (amount) => {
-    const cost = amount * 500 // 1 special = 500 regular
-    if (get().regularTickets < cost) {
-      throw new Error(`You need ${cost} regular tickets for ${amount} special tickets`)
-    }
+    if (get().isConvertingToSpecial) return
 
-    set({ isLoading: true })
+    set({ isConvertingToSpecial: true })
     try {
       await ticketsApi.convertToSpecial(amount)
       set((state) => ({
-        regularTickets: state.regularTickets - cost,
-        specialTickets: state.specialTickets + amount,
-        isLoading: false,
-        error: null
+        regularTickets: (state.regularTickets || 0) - amount * state.conversionRate,
+        specialTickets: (state.specialTickets || 0) + amount,
+        isConvertingToSpecial: false
       }))
     } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Conversion failed'),
-        isLoading: false
-      })
+      set({ isConvertingToSpecial: false })
       throw error
     }
   },
 
   awardTickets: async (amount) => {
-    set({ isLoading: true })
+    if (get().isAwardingTickets) return
+
+    set({ isAwardingTickets: true })
     try {
       await ticketsApi.awardTickets(amount)
       set((state) => ({
-        regularTickets: state.regularTickets + amount,
-        isLoading: false,
-        error: null
+        regularTickets: (state.regularTickets || 0) + amount,
+        isAwardingTickets: false
       }))
     } catch (error) {
-      set({
-        error: error instanceof Error ? error : new Error('Award failed'),
-        isLoading: false  
-      })
+      set({ isAwardingTickets: false })
       throw error
     }
   },
+
+  spendTickets: async (type, amount) => {
+    if (get().isSpendingTickets) return
+
+    set({ isSpendingTickets: true })
+    if (type === 'regular') {
+      try {
+        await ticketsApi.spendTickets(type, amount)
+        set(state => ({
+          regularTickets: (state.regularTickets || 0) - amount,
+          isSpendingTickets: false
+        }))
+      } catch (error) {
+        set({ isSpendingTickets: false })
+        throw error
+      }
+    } else if (type === 'special') {
+      try {
+        await ticketsApi.spendTickets(type, amount)
+        set(state => ({
+          specialTickets: (state.specialTickets || 0) - amount,
+          isSpendingTickets: false
+        }))
+      } catch (error) {
+        set({ isSpendingTickets: false })
+        throw error
+      }
+    } else {
+      throw new Error('Missing or incorrect ticket type (regular/special)')
+    }
+  }
 }))

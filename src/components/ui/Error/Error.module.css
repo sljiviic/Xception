@@ -1,0 +1,21 @@
+.errorContainer {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+}
+
+.error {
+  color: var(--color-error);
+}
+
+/* Type */
+
+.empty {
+  color: var(--color-text-primary);
+}

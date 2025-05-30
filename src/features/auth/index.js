@@ -4,6 +4,6 @@ export { default as AuthModal } from './components/AuthModal/AuthModal'
 
 export { useLogin } from './hooks/useLogin'
 export { useRegister } from './hooks/useRegister'
-export { useUser } from './hooks/useUser'
+export { useProtectedClick } from './hooks/useProtectedClick'
 
 export { useAuthStore } from './stores/useAuthStore'

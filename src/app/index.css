@@ -1,4 +1,4 @@
-/* variables */
+/* Variables */
 :root {
   /* === Typography === */
   /* Font families */
@@ -40,26 +40,29 @@
 
   /* === Color Palette === */
   /* Backgrounds */
-  --color-bg-primary: #010101;
-  --color-bg-secondary: #111111;
-  --color-bg-tertiary: #ffffff;
+  --color-bg-primary: rgb(1, 1, 1);
+  --color-bg-secondary: rgb(17, 17, 17);
+  --color-bg-tertiary: rgb(255, 255, 255);
 
   /* Text colors */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.8);
-  --color-text-error: #ff0000;
+  --color-text-primary: rgb(255, 255, 255);
+  --color-text-secondary: rgba(255, 255, 255, 0.7);
+  --color-text-error: rgb(255, 0, 0);
+
+  /* Border color */
+  --color-border-primary: rgb(255, 255, 255);
 
   /* Accent / Primary action */
-  --color-accent: #ff4106;
+  --color-accent: rgb(255, 65, 6);
 
   /* Status / Feedback */
-  --color-error: #ff0000;
+  --color-error: rgb(255, 0, 0);
 
   /* === Border === */
   --border-radius: 20px;
 }
 
-/* resets */
+/* Resets */
 img {
   display: block;
   max-width: 100%;
@@ -74,7 +77,7 @@ img {
   padding: 0;
 }
 
-/* global styling */
+/* Global styling */
 html {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-regular);
@@ -110,19 +113,88 @@ i.fa {
   vertical-align: middle;
 }
 
-/* utility classes */
-.flex-col {
-  flex-direction: column;
+/* Toast */
+.custom-toast {
+  color: #ffffff !important;
+  font-family: var(--font-primary) !important;
+  font-size: var(--text-sm) !important;
+  border: none !important;
+  background-color: #00B606 !important;
 }
 
-.width-full {
-  width: 100%;
+/* Error toast */
+.custom-toast[data-type="error"] {
+  background-color: #FF0000 !important;
+}
+
+
+/* Utility classes */
+.flex-col {
+  flex-direction: column;
 }
 
 .margin-0 {
   margin: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 .margin-top {
   margin-top: 1.2rem;
+}
+
+/* Animation Classes */
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.fadeIn2 {
+  opacity: 0;
+  animation: fadeIn2 0.2s ease forwards;
+}
+
+.fadeOut {
+  animation: fadeOut 0.5s ease forwards;
+}
+
+.pageOpeningAnimation {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn2 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }

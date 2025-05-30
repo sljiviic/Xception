@@ -54,11 +54,11 @@
 
 .links {
   display: flex;
-  gap: 16px;
+  gap: 2rem;
 }
 
 .links a {
-  font-size: var(--text-xl);
+  font-size: var(--text-lg);
   font-weight: var(--font-weight-bold);
 }
 
@@ -92,6 +92,40 @@
   color: var(--color-accent);
 }
 
+.authWrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.loginButton,
+.registerButton {
+  border: none;
+  background: none;
+  color: var(--color-text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  transition: background-color .2s ease, border .2s ease, color .2s ease;
+}
+
+.loginButton {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius);
+}
+
+.loginButton:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.registerButton {
+  padding: 0.5rem;
+}
+
+.registerButton:hover {
+  color: var(--color-accent);
+}
+
 @media(max-width: 1067px) {
 
   .header {
@@ -113,5 +147,11 @@
 
   .homeButton {
     max-width: 100px;
+  }
+
+  .loginButton,
+  .registerButton {
+    font-size: var(--text-sm);
+    padding-block: 0.3rem;
   }
 }

@@ -1,0 +1,13 @@
+.leaderboardListWrapper {
+  display: flex;
+  gap: 7rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .leaderboardListWrapper {
+    flex-direction: column;
+    gap: 3rem;
+  }
+}

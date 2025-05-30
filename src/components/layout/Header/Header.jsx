@@ -4,11 +4,16 @@ import clsx from 'clsx'
 import { useScrollTrigger } from '@/hooks/useScrollTrigger'
 import classes from './Header.module.css'
 import { TicketBalance } from '@/features/tickets'
+import { useAuthStore } from '@/features/auth'
+import { useUiStore } from '@/stores/useUiStore'
 import DropdownMenu from '../DropdownMenu/DropdownMenu'
+
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const isScrolled = useScrollTrigger(10)
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
+  const openAuthModal = useUiStore(state => state.openAuthModal)
 
   const headerClass = clsx(
     classes.header,
@@ -36,14 +41,31 @@ const Header = () => {
         </ul>
 
         <div className={classes.userSection}>
-          <div className={classes.TicketBalance}>
-            <TicketBalance />
-          </div>
-          <Link to='/profile' className={classes.profileIcon}>
-            <svg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 448 512'>
-              <path d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z' />
-            </svg>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <div className={classes.TicketBalance}>
+                <TicketBalance />
+              </div>
+              <Link to='/profile' className={classes.profileIcon}>
+                <svg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 448 512'>
+                  <path d='M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z' />
+                </svg>
+              </Link>
+            </>
+          ) : (
+            <div className={classes.authWrapper}>
+              <button className={classes.registerButton} onClick={(e) => {
+                e?.preventDefault()
+                e?.stopPropagation()
+                openAuthModal({ defaultView: 'register' })
+              }} >Register</button>
+              <button className={classes.loginButton} onClick={(e) => {
+                e?.preventDefault()
+                e?.stopPropagation()
+                openAuthModal({ defaultView: 'login' })
+              }}>Login</button>
+            </div>
+          )}
           <i
             className={toggleButtonClass}
             onClick={(e) => {

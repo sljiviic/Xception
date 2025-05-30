@@ -1,7 +1,7 @@
 .form {
   text-align: center;
   padding: 0 1.5rem;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-border-primary);
   border-radius: var(--border-radius);
   margin: 0 1.5rem;
   padding: 0.8rem;
@@ -18,16 +18,10 @@
 }
 
 .ticketIcon {
-  width: 25px;
-  height: 25px;
-}
-
-.ticketRegular {
-  margin-left: 0.5rem;
+  width: 22px;
 }
 
 .button {
-  padding: 0.7em 3em;
   margin-bottom: 0.5rem;
 }
 
@@ -65,7 +59,7 @@
   background: none;
   color: var(--color-text-primary);
   outline: none;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--color-border-primary);
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: border .2s ease, transform .2s ease;

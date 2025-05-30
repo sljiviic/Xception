@@ -1,29 +1,35 @@
-import { useEffect, useMemo } from "react"
-import { useTaskStore } from "../stores/useTaskStore"
+import { useCallback, useMemo } from 'react'
+import { useTaskStore } from '../stores/useTaskStore'
 
-// This hook fetches all tasks and separates daily and mandatory.
-
-export const useTasks = (query = '') => {
+export const useTasks = () => {
   const fetchTasks = useTaskStore(state => state.fetchTasks)
   const tasks = useTaskStore(state => state.tasks)
-  const isLoading = useTaskStore(state => state.isLoading)
-  const error = useTaskStore(state => state.error)
+  const isFetchingTasks = useTaskStore(state => state.isFetchingTasks)
 
-  useEffect(() => {
-    fetchTasks(query)
-  }, [fetchTasks, query])
+  const handleFetchTasks = useCallback(async (query) => {
+    try {
+      await fetchTasks(query)
+    } catch (error) {
+      console.error('Fetching tasks failed:', error)
+    }
+  }, [fetchTasks])
 
-  // Task separation
-  const { dailyTasks, mandatoryTasks } = useMemo(() => ({
-    dailyTasks: tasks.filter(task => task.type === 'daily'),
-    mandatoryTasks: tasks.filter(task => task.type === 'mandatory')
-  }), [tasks])
+  const { dailyTasks, mandatoryTasks } = useMemo(() => {
+    if (!(tasks instanceof Array) || !tasks.length) return {
+      dailyTasks: [],
+      mandatoryTasks: []
+    }
+    return {
+      dailyTasks: tasks.filter(task => task.type === 'daily'),
+      mandatoryTasks: tasks.filter(task => task.type === 'mandatory')
+    }
+  }, [tasks])
 
   return {
     tasks,
-    daily: dailyTasks,
-    mandatory: mandatoryTasks,
-    isLoading,
-    error
+    dailyTasks,
+    mandatoryTasks,
+    isFetchingTasks,
+    fetchTasks: handleFetchTasks
   }
 }

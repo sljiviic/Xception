@@ -4,11 +4,11 @@ export const useClickOutside = (ref, handler, isActive = true) => {
   useEffect(() => {
     if (!isActive || !handler) return
 
-    const handleInteraction = (event) => {
-      // handle both mouse and touch events
+    const handleInteraction = (e) => {
+      // Handle both mouse and touch events
       if (!ref.current || ref.current.contains(event.target)) return
       // setTimeout for click handling avoids race conditions
-      setTimeout(() => handler(event), 0)
+      setTimeout(() => handler(e), 0)
     }
 
     const handleEscape = (e) => {

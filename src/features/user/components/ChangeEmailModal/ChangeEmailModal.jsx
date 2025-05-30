@@ -1,31 +1,36 @@
-import { useState } from "react"
+import { useEffect, useState } from 'react'
 import classes from './ChangeEmailModal.module.css'
-import Modal from "@/components/ui/Modal/Modal"
-import Input from "@/components/ui/Input/Input"
-import Button from "@/components/ui/Button/Button"
+import { useUserProfile } from '../../hooks/useUserProfile'
+import Modal from '@/components/ui/Modal/Modal'
+import Input from '@/components/ui/Input/Input'
+import Button from '@/components/ui/Button/Button'
 
-const ChangeEmailModal = () => {
-  const [isOpen, setIsOpen] = useState(true)
+const ChangeEmailModal = ({ isOpen, onClose }) => {
   const [newEmail, setNewEmail] = useState('')
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
+  const [notification, setNofication] = useState('')
 
-  const handleEmailChange = e => {
-    e.preventDefault()
+  useEffect(() => {
+    if (!isOpen) {
+      setNewEmail('')
+      setNofication('')
+    }
+  }, [isOpen])
 
-    console.log({ newEmail })
-    setError('')
-    setMessage('Message was sent to your old email')
+  const { user, changeEmail, isChangingEmail } = useUserProfile()
+
+  const handleEmailChange = async (e) => {
+    e?.preventDefault()
+    await changeEmail(newEmail)
+    setNofication(user.email ? `Message was sent to ${user.email}` : '')
   }
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={onClose}
       title='Change Email'
-      error={error}
       footer={
-        <p className={classes.message}>{message}</p>
+        <p className={classes.notification}>{notification}</p>
       }
     >
       <form onSubmit={handleEmailChange} className={classes.form}>
@@ -36,19 +41,23 @@ const ChangeEmailModal = () => {
           value={newEmail}
           onChange={({ target }) => {
             setNewEmail(target.value)
-            if (message) setMessage('')
+            if (notification) setNofication('')
           }}
           required={true}
-          className='width-full'
+          className={classes.input}
         />
         <Button
-          type="submit"
-          variant="primary"
-          size="medium"
-          className='margin-top'
-          disabled={!!message}
+          type='submit'
+          variant='primary'
+          size='medium'
+          className={classes.button}
+          disabled={!!notification || isChangingEmail}
         >
-          Confirm
+          {isChangingEmail ? (
+            <i className='fa fa-circle-o-notch fa-spin'></i>
+          ) : (
+            'Confirm'
+          )}
         </Button>
       </form>
     </Modal>

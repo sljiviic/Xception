@@ -7,6 +7,7 @@ const Input = ({
   name,
   error = '',
   className,
+  wrapperClassName,
   ...props
 }) => {
   const inputClass = clsx(
@@ -26,21 +27,23 @@ const Input = ({
   )
 
   return (
-    <div className={classes.wrapper}>
-      {label && (
-        <label htmlFor={name} className={labelClass}>
-          {label}
-        </label>
-      )}
-      <input
-        id={name}
-        name={name}
-        className={inputClass}
-        aria-label={label}
-        {...props}
-      />
+    <>
+      <div className={clsx(classes.wrapper, wrapperClassName)}>
+        {label && (
+          <label htmlFor={name} className={labelClass}>
+            {label}
+          </label>
+        )}
+        <input
+          id={name}
+          name={name}
+          className={inputClass}
+          aria-label={label}
+          {...props}
+        />
+      </div>
       <div className={errorClass}>{error}</div>
-    </div>
+    </>
   )
 }
 

@@ -1,0 +1,94 @@
+.modal {
+  position: relative;
+  padding-bottom: calc(2rem + 25px);
+  overflow: hidden;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modalImage {
+  max-height: 150px;
+}
+
+.arrowIcon {
+  transition: transform 0.3s ease;
+}
+
+.arrowButton:hover .arrowIcon {
+  transform: translateX(3px);
+}
+
+.joinControls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button {
+  padding-inline: 4.5rem;
+}
+
+.input {
+  border: none;
+  max-width: 85px;
+  padding: 0;
+  text-align: center;
+  color: var(--color-text-primary);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.formControls {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  background-color: #000000;
+  border-radius: var(--border-radius);
+  border: 3px solid #000000;
+}
+
+.formControls div {
+  display: unset;
+  width: unset;
+}
+
+.formText {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.buttonInput {
+  font-size: var(--text-sm);
+  padding: 0.5rem 1rem;
+}
+
+.placedTickets {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  width: 130%;
+  padding: 0.5rem 0;
+  background-color: #000000;
+  color: var(--color-text-primary);
+}
+
+.ticketIcon {
+  width: 22px;
+}

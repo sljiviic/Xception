@@ -1,0 +1,83 @@
+.container {
+  flex: 1;
+  max-width: 500px;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  color: var(--color-text-primary);
+}
+
+.description {
+  color: var(--color-text-secondary);
+}
+
+.levelItemWrapper {
+  display: flex;
+  align-items: flex-end;
+  min-height: 50px;
+}
+
+.levelItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.requiredTickets {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 96.5px;
+}
+
+.ticketIcon {
+  max-width: 20px;
+}
+
+.ticketAmount {
+  font-weight: var(--font-weight-bold);
+}
+
+.levelCircle {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: #777777;
+  z-index: 1;
+}
+
+.levelCircle.completed {
+  background: var(--color-accent);
+}
+
+.progressTrack {
+  display: flex;
+  align-items: flex-end;
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 32px;
+  transform: translate(55%, -96%);
+  background-color: #777777;
+}
+
+.progressBar {
+  width: 100%;
+  background: var(--color-accent);
+  transition: height 0.5s ease;
+}
+
+.rewardText {
+  flex: 3;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+.ticketAmount:hover,
+.rewardText:hover {
+  cursor: default;
+}
