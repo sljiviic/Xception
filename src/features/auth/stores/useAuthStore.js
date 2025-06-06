@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { authApi } from '../api/authApi'
-import axios from 'axios'
 
 export const useAuthStore = create((set, get) => ({
   user: null,
@@ -78,51 +77,3 @@ export const useAuthStore = create((set, get) => ({
 
   clearError: () => set({ error: null })
 }))
-
-// Axios interceptor setup
-let refreshPromise = null
-
-// Attaching the access token to the Authorization header
-axios.interceptors.request.use(
-  (config) => {
-    const accessToken = useAuthStore.getState().accessToken
-
-    if (accessToken) {
-      config.headers = config.headers || {}
-      config.headers.Authorization = `Bearer ${accessToken}`
-    }
-    return config
-  },
-  (error) => Promise.reject(error)
-)
-
-// Catch 401 Unauthorized errors (usually because the access token is expired), refresh the token, and then retry the original request seamlessly — without user interaction
-axios.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config
-    const { status } = error.response || {}
-
-    // Handle 401 Unauthorized
-    if (status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-
-      try {
-        // Prevent multiple refresh attempts
-        refreshPromise = refreshPromise || useAuthStore.getState().refreshToken()
-        const newToken = await refreshPromise
-        refreshPromise = null
-
-        // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${newToken}`
-        return axios(originalRequest)
-      } catch (refreshError) {
-        useAuthStore.getState().logout()
-        // Handling refresh failure
-        return Promise.reject(refreshError)
-      }
-    }
-    // Handling non-401 errors
-    return Promise.reject(error)
-  }
-)

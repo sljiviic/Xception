@@ -16,18 +16,16 @@ const BonusList = ({ limit, variant, className }) => {
   } = useBonus()
 
   useEffect(() => {
-    fetchBonuses()
-    fetchUserBonuses()
-  }, [fetchBonuses, fetchUserBonuses])
+    fetchBonuses({ pageSize: limit })
+    fetchUserBonuses({ pageSize: limit })
+  }, [fetchBonuses, fetchUserBonuses, limit])
 
   if (!(bonuses instanceof Array) || !bonuses.length) return <Error error='No bonuses available at the moment' type='empty' />
   if (isFetchingBonuses || isFetchingUserBonuses) return <LoadingSpinner text='Loading Bonuses...' size='medium' />
 
-  const visibleBonuses = limit ? bonuses.slice(0, limit) : bonuses
-
   return (
     <div className={className}>
-      {visibleBonuses.map(bonus => (
+      {bonuses.items.map(bonus => (
         <BonusCard
           key={bonus?.id}
           bonus={bonus}

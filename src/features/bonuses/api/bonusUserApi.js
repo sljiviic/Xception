@@ -1,13 +1,24 @@
-import axios from 'axios'
-
-const bonusUserAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/bonususer',
-  withCredentials: true,
-})
+import bonusUserAxios from '@/lib/api/instances/bonusUserAxios'
 
 export const bonusUserApi = {
-  getAll: async (query = '') => {
-    const response = await bonusUserAxios.get(query)
+  getAll: async (
+    start,
+    end,
+    page,
+    pageSize,
+    orderBy,
+    order
+  ) => {
+    const response = await bonusUserAxios.get('', {
+      params: {
+        start,
+        end,
+        page,
+        pageSize,
+        orderBy,
+        order
+      }
+    })
     return response.data
   },
 
@@ -21,10 +32,10 @@ export const bonusUserApi = {
     return response.data
   },
 
-  update: async (id, bonusUserData) => {
-    const response = await bonusUserAxios.put(`/${id}`, bonusUserData)
-    return response.data
-  },
+  // update: async (id, bonusUserData) => {
+  //   const response = await bonusUserAxios.put(`/${id}`, bonusUserData)
+  //   return response.data
+  // },
 
   delete: async (id) => {
     await bonusUserAxios.delete(`/${id}`)

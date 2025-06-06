@@ -15,7 +15,7 @@ const BonusCard = ({ bonus, isClaimed, variant }) => {
   return (
     <Card
       variant={variant}
-      title={bonus?.title}
+      title={bonus?.name}
       image={bonus?.image}
       footer={
         <Button

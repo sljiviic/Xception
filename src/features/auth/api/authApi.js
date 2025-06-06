@@ -1,10 +1,4 @@
-import axios from 'axios'
-
-const authAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/auth',
-  timeout: 5000,
-  withCredentials: true,
-})
+import authAxios from '@/lib/api/instances/authAxios'
 
 export const authApi = {
   login: async (userData) => {
@@ -19,7 +13,7 @@ export const authApi = {
 
   refreshToken: async () => {
     // Refresh token will be automatically sent via HttpOnly cookie
-    const response = await authAxios.post('/refresh-token')
+    const response = await authAxios.post('/refresh-token', {})
     return response.data
   },
 

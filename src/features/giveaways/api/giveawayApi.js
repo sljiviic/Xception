@@ -1,9 +1,4 @@
-import axios from 'axios'
-
-const giveawayAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/giveaway',
-  withCredentials: true,
-})
+import giveawayAxios from '@/lib/api/instances/giveawayAxios'
 
 export const giveawayApi = {
   getAll: async (query = '') => {

@@ -8,12 +8,26 @@ export const useBonusStore = create((set, get) => ({
   isFetchingBonuses: false,
   isFetchingUserBonuses: false,
 
-  fetchBonuses: async (query = '') => {
+  fetchBonuses: async ({
+    start,
+    end,
+    page = 1,
+    pageSize = 10,
+    orderBy,
+    order
+  }) => {
     if (get().isFetchingBonuses) return
 
     set({ isFetchingBonuses: true })
     try {
-      const bonuses = await bonusApi.getAll(query)
+      const bonuses = await bonusApi.getAll(
+        start,
+        end,
+        page,
+        pageSize,
+        orderBy,
+        order
+      )
       set({
         bonuses,
         isFetchingBonuses: false
@@ -24,12 +38,26 @@ export const useBonusStore = create((set, get) => ({
     }
   },
 
-  fetchUserBonuses: async (query = '') => {
+  fetchUserBonuses: async ({
+    start,
+    end,
+    page = 1,
+    pageSize = 10,
+    orderBy,
+    order
+  }) => {
     if (get().isFetchingUserBonuses) return
 
     set({ isFetchingUserBonuses: true })
     try {
-      const userBonuses = await bonusUserApi.getAll(query)
+      const userBonuses = await bonusUserApi.getAll(
+        start,
+        end,
+        page,
+        pageSize,
+        orderBy,
+        order
+      )
       set({
         userBonuses,
         isFetchingUserBonuses: false
@@ -40,6 +68,7 @@ export const useBonusStore = create((set, get) => ({
     }
   },
 
+  // Claim or Save bonus
   claimBonus: async (bonusId) => {
     const claimedBonus = await bonusUserApi.create(bonusId)
     set(state => ({
@@ -48,13 +77,13 @@ export const useBonusStore = create((set, get) => ({
     return claimedBonus
   },
 
-  updateBonus: async (bonusUserId, bonusUserData) => {
-    const updatedBonus = await bonusUserApi.update(bonusUserId, bonusUserData)
-    set(state => ({
-      userBonuses: state.userBonuses.map(bonus =>
-        bonus.id === bonusUserId ? updatedBonus : bonus
-      )
-    }))
-    return updatedBonus
-  }
+  // updateBonus: async (bonusUserId, bonusUserData) => {
+  //   const updatedBonus = await bonusUserApi.update(bonusUserId, bonusUserData)
+  //   set(state => ({
+  //     userBonuses: state.userBonuses.map(bonus =>
+  //       bonus.id === bonusUserId ? updatedBonus : bonus
+  //     )
+  //   }))
+  //   return updatedBonus
+  // }
 }))

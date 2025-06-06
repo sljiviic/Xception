@@ -9,7 +9,7 @@ export const useBonus = () => {
   const fetchBonuses = useBonusStore(state => state.fetchBonuses)
   const fetchUserBonuses = useBonusStore(state => state.fetchUserBonuses)
   const claimBonus = useBonusStore(state => state.claimBonus)
-  const updateBonus = useBonusStore(state => state.updateBonus)
+  // const updateBonus = useBonusStore(state => state.updateBonus)
 
   const handleFetchBonuses = useCallback(async () => {
     try {
@@ -28,7 +28,7 @@ export const useBonus = () => {
   }, [fetchUserBonuses])
 
   const hasClaimedBonus = useCallback((bonusId) => {
-    return userBonuses.some(ub => ub.bonusId === bonusId)
+    return userBonuses.items.some(ub => ub.bonusId === bonusId)
   }, [userBonuses])
 
   // Handle bonus claiming with URL redirection
@@ -37,8 +37,8 @@ export const useBonus = () => {
       const claimedBonus = await claimBonus(bonus.id)
 
       // Redirect to bonus URL if available
-      if (bonus.redirectUrl) {
-        window.open(bonus.redirectUrl, '_blank')
+      if (bonus.url) {
+        window.open(bonus.url, '_blank')
       }
 
       return claimedBonus
@@ -56,6 +56,6 @@ export const useBonus = () => {
     fetchUserBonuses: handleFetchUserBonuses,
     hasClaimedBonus,
     claimBonus: handleClaimBonus,
-    updateBonus,
+    // updateBonus,
   }
 }
