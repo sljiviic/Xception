@@ -1,22 +1,43 @@
 import classes from './LoginForm.module.css'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { useLogin } from '../../hooks/useLogin'
 import Button from '@/components/ui/Button/Button'
 import Input from '@/components/ui/Input/Input'
+import { useEffect } from 'react'
 
 
-const LoginForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+const LoginForm = ({ onSuccess, values, setValues }) => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors }
+  } = useForm({
+    defaultValues: values,
+  })
+  const watched = useWatch({ control })
   const { login, isLoading } = useLogin()
+
+  useEffect(() => {
+    setValues?.({ login: watched?.login, password: watched?.password })
+  }, [watched, setValues])
 
   const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const credentials = {
       [isEmail(data.login) ? 'email' : 'username']: data.login,
       password: data.password
     }
-    login(credentials)
+    try {
+      await login(credentials)
+      onSuccess?.()
+      reset({ login: '', password: '' })
+      setValues({ login: '', password: '' })
+    } catch (error) {
+      console.error('Login failed', error)
+    }
   }
 
   return (

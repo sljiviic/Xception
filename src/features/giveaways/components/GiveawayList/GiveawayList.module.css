@@ -6,6 +6,17 @@
   margin: 3rem 0;
 }
 
+.giveaway1,
+.giveaway2,
+.giveaway3 {
+  flex: 1;
+  width: 100%;
+}
+
+.giveawayItem {
+  aspect-ratio: 2 / 1;
+}
+
 @media(min-width: 768px) {
   .giveawayItem {
     max-width: 409px;

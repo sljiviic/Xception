@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { useGiveaways } from '../../hooks/useGiveaways'
-import { useGiveawayParticipation } from '../../hooks/useGiveawayParticipation'
 import { useNavigate } from 'react-router-dom'
+import { useGiveawaysUser } from '../../hooks/useGiveawaysUser'
+import { getGiveawayFloatText } from '../../utils/getGiveawayFloatText'
+import { getGiveawayRarityColor } from '../../utils/getGiveawayRarityColor'
+import { useMandatoryTasksCompleted } from '@/features/tasks'
 import Modal from '@/components/ui/Modal/Modal'
 import Input from '@/components/ui/Input/Input'
 import Button from '@/components/ui/Button/Button'
@@ -11,17 +13,28 @@ import regularTicketIcon from '../../assets/ticket-main.svg'
 import clsx from 'clsx'
 
 const GiveawayModal = ({ giveaway, isOpen, onClose }) => {
-  const { hasJoined, getEntry, areMandatoryCompleted } = useGiveaways()
-  const { participate, addMoreTickets } = useGiveawayParticipation()
-  const navigate = useNavigate()
+  const {
+    hasJoined,
+    getEntry,
+    joinGiveaway,
+    addMoreTickets
+  } = useGiveawaysUser()
 
+  const { areMandatoryCompleted } = useMandatoryTasksCompleted()
+
+  const navigate = useNavigate()
   const [additionalTickets, setAdditionalTickets] = useState('1')
   const [inputError, setInputError] = useState(null)
-  const entry = getEntry(giveaway.id)
-  const hasUserJoined = hasJoined(giveaway.id)
+
+  if (!giveaway) return null
+
+  const entry = getEntry(giveaway?.id)
+  const hasUserJoined = hasJoined(giveaway?.id)
+  const itemFloatText = getGiveawayFloatText(giveaway?.float)
+  const itemRarityColor = getGiveawayRarityColor(giveaway?.rarity)
 
   const handleAddTickets = async (e) => {
-    e?.preventDefault()
+    e.preventDefault()
     const ticketAmount = Number(additionalTickets)
 
     if (isNaN(ticketAmount)) {
@@ -36,7 +49,7 @@ const GiveawayModal = ({ giveaway, isOpen, onClose }) => {
 
     try {
       await addMoreTickets(giveaway, ticketAmount)
-      setAdditionalTickets(1)
+      setAdditionalTickets('1')
     } catch (error) {
       console.error('Failed to add tickets:', error)
     }
@@ -79,7 +92,10 @@ const GiveawayModal = ({ giveaway, isOpen, onClose }) => {
         {areMandatoryCompleted ? (
           <>
             <Button
-              onClick={participate(giveaway)}
+              onClick={(e) => {
+                e.preventDefault()
+                joinGiveaway(giveaway)
+              }}
               variant='secondary'
               className={classes.button}
             >
@@ -90,7 +106,7 @@ const GiveawayModal = ({ giveaway, isOpen, onClose }) => {
         ) : (
           <Button
             onClick={(e) => {
-              e?.preventDefault()
+              e.preventDefault()
               navigate('/giveaways', { state: { scrollToTasks: true } })
             }}
             variant='error'
@@ -108,18 +124,33 @@ const GiveawayModal = ({ giveaway, isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={giveaway.title}
+      title={giveaway?.name}
       footer={modalDisplay()}
       error={areMandatoryCompleted ? inputError : 'Must complete mandatory tasks'}
       className={clsx({ [classes.modal]: hasUserJoined })}
     >
       <div className={classes.modalContent}>
-        <img className={classes.modalImage} src={giveaway.imageUrl} alt={giveaway.title} />
+        <div className={classes.giveawayItem}>
+          <div className={classes.itemContent}>
+            <div className={classes.rarityIndicator} style={{ color: itemRarityColor }}></div>
+            <div className={classes.itemBody}>
+              <div className={classes.itemHeader}>
+                <div className={classes.name}>{giveaway?.name}</div>
+                <div className={classes.floatText}>{itemFloatText}</div>
+              </div>
+              {giveaway?.image && <img className={classes.image} src={giveaway?.image} alt={giveaway?.name} />}
+              <div className={classes.itemFooter}>
+                <div className={classes.date}>01/23/25</div>
+                <div className={classes.price}>{giveaway?.price}<span className={classes.priceSymbol}>$</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
         {hasUserJoined && (
           <p className={classes.placedTickets}>
             {`Placed tickets: ${entry.ticketCount}`}
             <img
-              src={giveaway.type === 'SPECIAL'
+              src={giveaway?.giveawayType === 1
                 ? specialTicketIcon
                 : regularTicketIcon}
               alt='Ticket Icon'

@@ -13,7 +13,7 @@ export const authApi = {
 
   refreshToken: async () => {
     // Refresh token will be automatically sent via HttpOnly cookie
-    const response = await authAxios.post('/refresh-token', {})
+    const response = await authAxios.post('/refresh-token')
     return response.data
   },
 

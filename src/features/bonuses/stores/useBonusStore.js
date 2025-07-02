@@ -1,33 +1,16 @@
 import { create } from 'zustand'
 import { bonusApi } from '../api/bonusApi'
-import { bonusUserApi } from '../api/bonusUserApi'
 
 export const useBonusStore = create((set, get) => ({
-  bonuses: [],
-  userBonuses: [],
+  bonuses: { items: [], count: 0 },
   isFetchingBonuses: false,
-  isFetchingUserBonuses: false,
 
-  fetchBonuses: async ({
-    start,
-    end,
-    page = 1,
-    pageSize = 10,
-    orderBy,
-    order
-  }) => {
+  fetchBonuses: async (params) => {
     if (get().isFetchingBonuses) return
 
     set({ isFetchingBonuses: true })
     try {
-      const bonuses = await bonusApi.getAll(
-        start,
-        end,
-        page,
-        pageSize,
-        orderBy,
-        order
-      )
+      const bonuses = await bonusApi.getAll(params)
       set({
         bonuses,
         isFetchingBonuses: false
@@ -38,52 +21,42 @@ export const useBonusStore = create((set, get) => ({
     }
   },
 
-  fetchUserBonuses: async ({
-    start,
-    end,
-    page = 1,
-    pageSize = 10,
-    orderBy,
-    order
-  }) => {
-    if (get().isFetchingUserBonuses) return
-
-    set({ isFetchingUserBonuses: true })
+  fetchById: async (id) => {
+    set({ isFetchingBonuses: true })
     try {
-      const userBonuses = await bonusUserApi.getAll(
-        start,
-        end,
-        page,
-        pageSize,
-        orderBy,
-        order
-      )
-      set({
-        userBonuses,
-        isFetchingUserBonuses: false
-      })
+      const bonus = await bonusApi.getById(id)
+      set({ isFetchingBonuses: false })
+      return bonus
     } catch (error) {
-      set({ isFetchingUserBonuses: false })
+      set({ isFetchingBonuses: false })
       throw error
     }
   },
 
-  // Claim or Save bonus
-  claimBonus: async (bonusId) => {
-    const claimedBonus = await bonusUserApi.create(bonusId)
-    set(state => ({
-      userBonuses: [...state.userBonuses, claimedBonus]
-    }))
-    return claimedBonus
+  saveBonus: async (bonusData) => {
+    const savedBonus = await bonusApi.save(bonusData)
+    set(state => {
+      const exists = state.bonuses.items.some(b => b.id === savedBonus.id)
+
+      return {
+        bonuses: {
+          items: exists
+            ? state.bonuses.items.map(b => b.id === savedBonus.id ? savedBonus : b)
+            : [...state.bonuses.items, savedBonus],
+          count: exists ? state.bonuses.count : state.bonuses.count + 1
+        }
+      }
+    })
+    return savedBonus
   },
 
-  // updateBonus: async (bonusUserId, bonusUserData) => {
-  //   const updatedBonus = await bonusUserApi.update(bonusUserId, bonusUserData)
-  //   set(state => ({
-  //     userBonuses: state.userBonuses.map(bonus =>
-  //       bonus.id === bonusUserId ? updatedBonus : bonus
-  //     )
-  //   }))
-  //   return updatedBonus
-  // }
+  deleteBonus: async (id) => {
+    await bonusApi.delete(id)
+    set(state => ({
+      bonuses: {
+        items: state.bonuses.items.filter(b => b.id !== id),
+        count: Math.max(0, state.bonuses.count - 1)
+      }
+    }))
+  }
 }))

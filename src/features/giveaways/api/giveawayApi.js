@@ -1,8 +1,13 @@
 import giveawayAxios from '@/lib/api/instances/giveawayAxios'
 
 export const giveawayApi = {
-  getAll: async (query = '') => {
-    const response = await giveawayAxios.get(query)
+  getAll: async (params = {}) => {
+    const response = await giveawayAxios.get('', {
+      params,
+      paramsSerializer: {
+        indexes: null
+      }
+    })
     return response.data
   },
 
@@ -11,33 +16,12 @@ export const giveawayApi = {
     return response.data
   },
 
-  create: async (giveawayData) => {
+  save: async (giveawayData) => {
     const response = await giveawayAxios.post('/', giveawayData)
-    return response.data
-  },
-
-  update: async (id, giveawayData) => {
-    const response = await giveawayAxios.put(`/${id}`, giveawayData)
     return response.data
   },
 
   delete: async (id) => {
     await giveawayAxios.delete(`/${id}`)
   },
-
-  getActive: async () => {
-    const response = await giveawayAxios.get('/active')
-    return response.data
-  },
-
-  getInactive: async () => {
-    const response = await giveawayAxios.get('/inactive')
-    return response.data
-  },
-
-  // Fetch the amount of gathered tickets for a SPECIAL giveaway
-  getSpecialProgress: async () => {
-    const response = await giveawayAxios.get('/special-progress')
-    return response.data
-  }
 }

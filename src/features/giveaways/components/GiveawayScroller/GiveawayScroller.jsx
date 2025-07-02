@@ -1,5 +1,6 @@
 import { useMemo, useEffect, useCallback } from 'react'
 import { useGiveaways } from '../../hooks/useGiveaways'
+import { useGiveawaysUser } from '../../hooks/useGiveawaysUser'
 import GiveawayItem from '../GiveawayItem/GiveawayItem'
 import SectionBox from '@/components/sections/SectionBox/SectionBox'
 import Error from '@/components/ui/Error/Error'
@@ -9,24 +10,27 @@ const GiveawayScroller = ({ display = 'daily' }) => {
   const {
     activeGiveaways,
     inactiveGiveaways,
-    activeJoined,
-    wonGiveaways,
     fetchActive,
     fetchInactive,
-    fetchActiveJoined,
-    fetchWon
   } = useGiveaways()
+
+  const {
+    activeJoined,
+    // wonGiveaways,
+    fetchActiveJoined,
+    // fetchWon
+  } = useGiveawaysUser()
 
   const fetchData = useCallback(async () => {
     try {
       if (display === 'daily') return await fetchActive()
       if (display === 'inactive') return await fetchInactive()
-      if (display === 'joined') return await fetchActiveJoined()
-      if (display === 'win') return await fetchWon()
+      if (display === 'joined') return await Promise.all([fetchActive(), fetchActiveJoined()])
+      // if (display === 'win') return await fetchWon()
     } catch (error) {
       console.error('Error fetching giveaways:', error)
     }
-  }, [display, fetchActive, fetchInactive, fetchActiveJoined, fetchWon])
+  }, [display, fetchActive, fetchInactive, fetchActiveJoined])
 
   useEffect(() => {
     fetchData()
@@ -36,31 +40,31 @@ const GiveawayScroller = ({ display = 'daily' }) => {
     switch (display) {
       case 'daily':
         return {
-          data: activeGiveaways instanceof Array ? activeGiveaways?.filter(ag => ag?.type === 'DAILY') : [],
+          data: activeGiveaways.items instanceof Array ? activeGiveaways.items.filter(ag => ag?.intervalDays === 1) : [],
           title: 'Daily free drops (~2$)'
         }
       case 'inactive':
         return {
-          data: inactiveGiveaways,
+          data: inactiveGiveaways.items,
           title: 'Previous drops'
         }
       case 'joined':
         return {
-          data: activeJoined,
+          data: activeGiveaways.items.filter(ag => activeJoined.items.some(aj => aj.id === ag.id)),
           title: 'Active drops you have joined'
         }
-      case 'win':
-        return {
-          data: wonGiveaways,
-          title: 'Your reward history'
-        }
+      // case 'win':
+      //   return {
+      //     data: wonGiveaways.items,
+      //     title: 'Your reward history'
+      //   }
       default:
         return {
           data: [],
           title: ''
         }
     }
-  }, [display, activeGiveaways, inactiveGiveaways, activeJoined, wonGiveaways])
+  }, [display, activeGiveaways, inactiveGiveaways, activeJoined])
 
   if (!(displayData.data instanceof Array) || !displayData?.data.length) {
     return (

@@ -6,7 +6,7 @@ export const useClickOutside = (ref, handler, isActive = true) => {
 
     const handleInteraction = (e) => {
       // Handle both mouse and touch events
-      if (!ref.current || ref.current.contains(event.target)) return
+      if (!ref.current || ref.current.contains(e.target)) return
       // setTimeout for click handling avoids race conditions
       setTimeout(() => handler(e), 0)
     }

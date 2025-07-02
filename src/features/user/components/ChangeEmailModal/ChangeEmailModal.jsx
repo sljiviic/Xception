@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import classes from './ChangeEmailModal.module.css'
-import { useUserProfile } from '../../hooks/useUserProfile'
+import { useUser } from '../../hooks/useUser'
 import Modal from '@/components/ui/Modal/Modal'
 import Input from '@/components/ui/Input/Input'
 import Button from '@/components/ui/Button/Button'
@@ -16,12 +16,12 @@ const ChangeEmailModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen])
 
-  const { user, changeEmail, isChangingEmail } = useUserProfile()
+  const { changeEmail, isChangingEmail } = useUser()
 
   const handleEmailChange = async (e) => {
     e?.preventDefault()
     await changeEmail(newEmail)
-    setNofication(user.email ? `Message was sent to ${user.email}` : '')
+    setNofication('Your email has been changed.')
   }
 
   return (

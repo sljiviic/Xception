@@ -1,71 +1,64 @@
-import { useMemo } from 'react'
-import { useTaskUserStore } from '../stores/useTaskUserStore'
+import { useEffect, useState } from 'react'
+import { useTasksUser } from './useTasksUser'
 import { useTaskTimerStore } from '../stores/useTaskTimerStore'
-import { useUserLevel } from '@/features/user'
+import { useLevelBonus } from '@/features/levels'
+import { useAuthStore } from '@/features/auth/'
 
 export const useTaskStatus = (task) => {
-  const userTasks = useTaskUserStore(state => state.userTasks)
-  const getIsExpired = useTaskTimerStore(state => state.getIsExpired)
+  // USER
+  const user = useAuthStore(state => state.user)
+
+  const { tasksUser, fetchTasksUser } = useTasksUser()
+
+  const startTimer = useTaskTimerStore(state => state.startTimer)
   const getTimeLeft = useTaskTimerStore(state => state.getTimeLeft)
-  const { calculateRewardBonus } = useUserLevel()
+  const [timeLeft, setTimeLeft] = useState(null)
 
-  return useMemo(() => {
-    const validTaskTypes = ['mandatory', 'daily']
+  const taskUser = tasksUser.items.find(tu => tu.taskId === task?.id)
+  const completedAt = taskUser?.end
+  const levelBonus = useLevelBonus(user?.levelId)
 
-    if (!task?.type || !validTaskTypes.includes(task.type)) {
-      return {
-        type: 'error',
-        content: 'Invalid task type',
-        isCompleted: false,
-        reward: null
-      }
+  useEffect(() => {
+    fetchTasksUser()
+  }, [fetchTasksUser])
+
+  useEffect(() => {
+    if (task?.type === 'daily' && completedAt) {
+      startTimer(task?.id, completedAt)
+      setTimeLeft(getTimeLeft(task?.id))
     }
+  }, [task?.id, task?.type, completedAt, startTimer, getTimeLeft])
 
-    // Calculate reward
-    const reward = task.type === 'daily'
-      ? calculateRewardBonus(task.baseReward)
-      : task.baseReward
-    if (!reward) {
-      return {
-        type: 'error',
-        content: 'Reward calculation failed',
-        isCompleted: false,
-        reward: null
-      }
-    }
-
-    // Mandatory tasks
-    if (task.type === 'mandatory') {
-      const userTask = userTasks.find(ut => ut.taskId === task.id)
-      const isCompleted = userTask?.status === 'COMPLETED'
-
-      return {
-        type: isCompleted ? 'check' : 'reward',
-        content: isCompleted ? null : reward,
-        isCompleted,
-        reward
-      }
-    }
-
-    // Daily tasks
-    if (task.type === 'daily') {
-      const isExpired = getIsExpired(task.id)
-      const timeLeft = getTimeLeft(task.id)
-      const isCompleted = !isExpired
-
-      return {
-        type: isExpired ? 'reward' : 'countdown',
-        content: isExpired ? reward : timeLeft,
-        isCompleted,
-        reward,
-      }
-    }
-
+  const validTaskTypes = ['mandatory', 'daily']
+  if (!task?.type || !validTaskTypes.includes(task?.type)) {
     return {
       type: 'error',
-      content: 'Unknown task state',
-      isCompleted: false,
+      content: 'Invalid task type',
+      completedAt: null,
       reward: null
     }
-  }, [task, userTasks, getIsExpired, getTimeLeft, calculateRewardBonus])
+  }
+
+  // Mandatory tasks
+  if (task?.type === 'mandatory') return ({
+    type: completedAt ? 'check' : 'reward',
+    content: completedAt ? null : task?.tickets,
+    completedAt,
+    reward: { base: task?.tickets, bonus: levelBonus }
+  })
+
+  // Daily tasks
+  if (task?.type === 'daily') return ({
+    type: completedAt ? 'reward' : 'countdown',
+    content: completedAt ? task?.tickets : timeLeft,
+    completedAt,
+    reward: { base: task?.tickets, bonus: levelBonus }
+  })
+
+  return {
+    type: 'error',
+    content: 'Unknown task state',
+    isCompleted: false,
+    reward: null
+  }
 }

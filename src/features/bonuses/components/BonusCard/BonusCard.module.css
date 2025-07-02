@@ -1,3 +1,223 @@
 .claimButton {
   width: 100%;
 }
+
+.container {
+  display: grid;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.imageContainer {
+  position: relative;
+  margin: 0 auto;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--border-radius);
+  text-align: center;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+
+.backgroundColor {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-accent);
+  z-index: -2;
+}
+
+.backgroundPattern {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('@/assets/itemBg.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 140%;
+  opacity: 0.3;
+}
+
+.circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40%;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+  background-color: var(--color-bg-primary);
+  box-shadow: 0 0 28px 40px var(--color-bg-primary);
+  z-index: -1;
+}
+
+.codeContainer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  background-color: transparent;
+  transition: background-color .2s ease;
+  cursor: pointer;
+}
+
+.imageContainer:hover .codeContainer {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.copyPrompt {
+  opacity: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  transition: opacity .3s ease;
+  cursor: default;
+}
+
+.imageContainer:hover .copyPrompt {
+  opacity: 1;
+}
+
+.codeDisplay {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-secondary);
+  transition: opacity .1s ease;
+}
+
+.imageContainer:hover .codeDisplay {
+  opacity: 0;
+}
+
+.codeValue {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 2px
+}
+
+.details {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.info {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.description {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  white-space: pre-line
+}
+
+.actions {
+  width: 100%;
+  /* max-width: 400px; */
+}
+
+/* There are primary and secondary variants. */
+/* The primary variant is horizontal, and its content has one column. */
+/* The secondary variant is vertical, and its content has two columns. */
+
+/* Primary variant */
+.container.primary {
+  flex: 1;
+  grid-template-columns: repeat(auto-fit, minmax(min(229px, 100%), 1fr));
+  max-width: 640px;
+}
+
+.container.primary .imageContainer {
+  width: 100%;
+  max-width: 340px;
+}
+
+/* Secondary variant */
+.container.secondary {
+  max-width: 430px;
+  width: 100%;
+}
+
+.container.secondary .imageContainer {
+  width: 100%;
+  max-width: 430px;
+}
+
+@media (min-width: 767px) {
+
+  .container.secondary {
+    grid-template-columns: 1fr;
+  }
+
+  .container.secondary .imageWrapper,
+  .container.secondary .details {
+    width: 100%;
+  }
+
+  .container.secondary .details {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-inline: 0.6rem;
+  }
+
+  .container.secondary .info {
+    flex: 2;
+  }
+
+  .container.secondary .actions {
+    flex: 1;
+    max-width: fit-content;
+  }
+}
+
+@media (max-width: 1091px) {
+  .container {
+    grid-template-rows: auto 1fr;
+  }
+
+  .container.primary {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: var(--text-lg);
+  }
+
+  .description {
+    font-size: var(--text-sm);
+  }
+}
+
+@media (max-width: 550px) {
+  .details {
+    justify-content: unset;
+    align-self: start;
+  }
+
+  .codeDisplay {
+    font-size: var(--text-xs);
+  }
+
+  .codeValue {
+    font-size: var(--text-sm);
+  }
+}

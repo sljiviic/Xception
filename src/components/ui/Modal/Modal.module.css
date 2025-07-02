@@ -9,7 +9,14 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
-  animation: fade .25s ease;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.backdrop.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .modal {
@@ -19,22 +26,27 @@
   max-height: 90vh;
   width: 100%;
   margin: 1.5rem;
-  padding: 2rem;
+  padding: 1.5rem 2rem 0 2rem;
   text-align: center;
   overflow-y: hidden;
   background-color: var(--color-bg-secondary);
   border: 2px solid var(--color-border-primary);
   border-radius: var(--border-radius);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  animation: fadeIn .25s ease;
-  transition: border .2s ease;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.25s ease, opacity 0.25s ease, border .2s ease;
+}
+
+.modal.hidden {
+  transform: translateY(-20px);
+  opacity: 0;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   margin: 1.8rem 0;
-  /* padding-block: 0.5rem; */
   overflow-y: auto;
 }
 
@@ -65,7 +77,8 @@
 .errorText {
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
+  margin-top: 1.5rem;
   transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
   /*  */
   color: var(--color-text-error);
@@ -86,26 +99,4 @@
   /* gap: 0.7rem; */
   /* width: 100%; */
   font-size: var(--text-base);
-}
-
-@keyframes fadeIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }

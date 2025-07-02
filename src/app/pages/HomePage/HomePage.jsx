@@ -15,6 +15,7 @@ const HomePage = () => {
         target='_blank'
         image={hero}
         imageAlt='A hero image'
+        className={classes.hero}
       />
       <BonusList
         limit={2}

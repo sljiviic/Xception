@@ -10,7 +10,7 @@ const TaskItem = ({ task, className = '', ...props }) => {
   const {
     type,
     content,
-    isCompleted,
+    completedAt,
     reward
   } = useTaskStatus(task)
   const { handleTaskClick, isLoading } = useTaskClick(task)
@@ -42,7 +42,7 @@ const TaskItem = ({ task, className = '', ...props }) => {
                 'fa-solid',
                 'fa-check',
                 classes.checkIcon,
-                { [classes.show]: !isHovering || task.type === 'mandatory' }
+                { [classes.show]: !isHovering || task?.type === 'mandatory' }
               )}
             ></i>
           </div>
@@ -84,19 +84,19 @@ const TaskItem = ({ task, className = '', ...props }) => {
       onMouseLeave={() => setIsHovering(false)}
       className={clsx(
         classes.taskItem,
-        classes[task.type],
+        classes[task?.type],
         {
-          [classes.completed]: isCompleted,
+          [classes.completed]: !!completedAt,
           [classes.loading]: isLoading
         },
         className
       )}
       aria-busy={isLoading}
-      aria-disabled={isLoading || isCompleted}
+      aria-disabled={isLoading || !!completedAt}
       {...props}
     >
       <div className={classes.leftSide}>
-        <span className={classes.title}>{task.title}</span>
+        <span className={classes.title}>{task?.name}</span>
       </div>
 
       <div className={classes.rightSide}>

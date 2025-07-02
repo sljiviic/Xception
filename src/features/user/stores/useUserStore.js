@@ -1,39 +1,40 @@
 import { create } from 'zustand'
 import { userApi } from '../api/userApi'
-import { userLevelApi } from '../api/userLevelApi'
-import { userSocialApi } from '../api/userSocialApi'
 
 export const useUserStore = create((set, get) => ({
   user: null,
-  userLevel: null,
-  socialConnections: [],
 
   // Loading states
-  isFetchingUserData: false,
+  isFetchingUser: false,
+  isUpdatingUser: false,
   isChangingEmail: false,
   isChangingUsername: false,
   isChangingPassword: false,
   isConnectingSocials: false,
 
-  fetchUserData: async () => {
-    if (get().isFetchingUserData) return
+  fetchUser: async (id) => {
+    if (get().isFetchingUser) return
 
-    set({ isFetchingUserData: true })
+    set({ isFetchingUser: true })
     try {
-      const [profile, level, socials] = await Promise.all([
-        userApi.getProfile(),
-        userLevelApi.getLevel(),
-        userSocialApi.getSocials()
-      ])
-
-      set({
-        user: profile,
-        userLevel: level,
-        socialConnections: socials,
-        isFetchingUserData: false
-      })
+      const user = await userApi.getById(id)
+      set({ user, isFetchingUser: false })
     } catch (error) {
-      set({ isFetchingUserData: false })
+      set({ isFetchingUser: false })
+      throw error
+    }
+  },
+
+  updateUser: async (id, userData) => {
+    if (get().isUpdatingUser) return
+
+    set({ isUpdatingUser: true })
+    try {
+      const user = await userApi.save(id, userData)
+      set({ user, isUpdatingUser: false })
+      return user
+    } catch (error) {
+      set({ isUpdatingUser: false })
       throw error
     }
   },
@@ -44,10 +45,7 @@ export const useUserStore = create((set, get) => ({
     set({ isChangingEmail: true })
     try {
       const user = await userApi.changeEmail(email)
-      set({
-        user,
-        isChangingEmail: false
-      })
+      set({ user, isChangingEmail: false })
     } catch (error) {
       set({ isChangingEmail: false })
       throw error
@@ -60,10 +58,7 @@ export const useUserStore = create((set, get) => ({
     set({ isChangingUsername: true })
     try {
       const user = await userApi.changeUsername(username)
-      set({
-        user,
-        isChangingUsername: false
-      })
+      set({ user, isChangingUsername: false })
     } catch (error) {
       set({ isChangingUsername: false })
       throw error
@@ -76,35 +71,30 @@ export const useUserStore = create((set, get) => ({
     set({ isChangingPassword: true })
     try {
       const user = await userApi.changePassword(currentPassword, newPassword)
-      set({
-        user,
-        isChangingPassword: false
-      })
+      set({ user, isChangingPassword: false })
     } catch (error) {
       set({ isChangingPassword: false })
       throw error
     }
   },
 
-  connectSocials: async (socialUsernames) => {
+  connectSocials: async (id, socialUsernames) => {
     if (get().isConnectingSocials) return
 
     set({ isConnectingSocials: true })
     try {
-      const socialConnections = await userSocialApi.connectSocials(socialUsernames)
-      set({
-        socialConnections,
-        isConnectingSocials: false
+      const updatedUser = await userApi.save(id, {
+        twitch: socialUsernames.twitch || null,
+        youtube: socialUsernames.youtube || null,
+        instagram: socialUsernames.instagram || null,
+        tikTok: socialUsernames.tikTok || null,
+        twitter: socialUsernames.twitter || null,
+        kick: socialUsernames.kick || null,
       })
+      set({ user: updatedUser, isConnectingSocials: false })
     } catch (error) {
       set({ isConnectingSocials: false })
       throw error
     }
-  },
-
-  clearUserData: () => set({
-    user: null,
-    userLevel: null,
-    socialConnections: []
-  })
+  }
 }))

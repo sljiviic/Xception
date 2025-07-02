@@ -1,22 +1,30 @@
 import { useState, useRef, useEffect } from 'react'
 import classes from './userSettings.module.css'
-import { useUserProfile } from '../../hooks/useUserProfile'
+import { useUser } from '../../hooks/useUser'
 import { useClickOutside } from '@/hooks/useClickOutside'
 import { useProtectedClick } from '@/features/auth'
+import { useAuthStore } from '@/features/auth/'
 import Input from '@/components/ui/Input/Input'
 import Button from '@/components/ui/Button/Button'
-import LoadingSpinner from '@/components/ui/LoadingSpinner/LoadingSpinner'
 import Error from '@/components/ui/Error/Error'
 import ChangeEmailModal from '../ChangeEmailModal/ChangeEmailModal'
 import ChangePasswordModal from '../ChangePasswordModal/ChangePasswordModal'
 import avatar from '../../assets/avatar.svg'
 
 const UserSettings = () => {
+  const user = useAuthStore(state => state.user)
   const [localUsername, setLocalUsername] = useState('')
   const [isEditingUsername, setIsEditingUsername] = useState(false)
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
-  const [socialLinks, setSocialLinks] = useState({ twitch: '', steam: '' })
+  const [socialLinks, setSocialLinks] = useState({
+    twitch: '',
+    youtube: '',
+    instagram: '',
+    tikTok: '',
+    twitter: '',
+    kick: '',
+  })
   const usernameEditRef = useRef(null)
   const handleProtectedClick = useProtectedClick()
 
@@ -27,28 +35,23 @@ const UserSettings = () => {
   )
 
   const {
-    user,
-    userLevel,
-    socialConnections,
-    fetchUserData,
-    isFetchingUserData,
     changeUsername,
     connectSocials
-  } = useUserProfile()
+  } = useUser()
 
   useEffect(() => {
-    fetchUserData()
-  }, [fetchUserData])
-
-  useEffect(() => {
-    if (user) setLocalUsername(user.username)
-    if (socialConnections) {
+    if (user) {
+      setLocalUsername(user?.username)
       setSocialLinks({
-        twitch: socialConnections.twitch || '',
-        steam: socialConnections.steam || ''
+        twitch: user?.twitch || '',
+        youtube: user?.youtube || '',
+        instagram: user?.instagram || '',
+        tikTok: user?.tikTok || '',
+        twitter: user?.twitter || '',
+        kick: user?.kick || ''
       })
     }
-  }, [user, socialConnections])
+  }, [user])
 
   const handleSocialLinkChange = (platform) => (e) => {
     setSocialLinks(prev => ({
@@ -69,7 +72,6 @@ const UserSettings = () => {
   }
 
   if (!(user instanceof Object) || !user?.username) return <Error error='You have to log in' type='empty' />
-  if (isFetchingUserData) return <LoadingSpinner text='Loading profile...' size='medium' />
 
   return (
     <div className={classes.wrapper}>
@@ -118,7 +120,7 @@ const UserSettings = () => {
               </button>
             )}
             <span className={classes.userLevel}>
-              Level: {userLevel?.level || 'N/A'}
+              Level: {user?.levelId || 'N/A'}
             </span>
           </div>
         </div>

@@ -25,7 +25,7 @@ const router = createBrowserRouter([
       }
       return null
     },
-    hydrateFallbackElement: <LoadingSpinner size='medium' />,
+    hydrateFallbackElement: <LoadingSpinner size='medium' style={{ height: '100dvh' }} />,
     children: [
       {
         index: true,

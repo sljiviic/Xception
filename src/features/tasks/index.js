@@ -6,6 +6,7 @@ export { useTaskCompletion } from './hooks/useTaskCompletion'
 export { useTaskClick } from './hooks/useTaskClick'
 export { useTaskStatus } from './hooks/useTaskStatus'
 export { useMandatoryTasksCompleted } from './hooks/useMandatoryTasksCompleted'
+export { useTasksUser } from './hooks/useTasksUser'
 
 export { useTaskStore } from './stores/useTaskStore'
 export { useTaskUserStore } from './stores/useTaskUserStore'

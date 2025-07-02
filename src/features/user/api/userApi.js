@@ -1,19 +1,23 @@
-import axios from 'axios'
-
-const userAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/user',
-  withCredentials: true,
-})
+import userAxios from '@/lib/api/instances/userAxios'
 
 export const userApi = {
-  // Get the current user profile
-  getProfile: async () => {
-    const response = await userAxios.get('/')
+  getAll: async (params = {}) => {
+    const response = await userAxios.get('/', {
+      params,
+      paramsSerializer: {
+        indexes: null
+      }
+    })
     return response.data
   },
 
-  getUserById: async (userId) => {
-    const response = await userAxios.get(`/${userId}`)
+  getById: async (id) => {
+    const response = await userAxios.get(`/${id}`)
+    return response.data
+  },
+
+  save: async (id, userData) => {
+    const response = await userAxios.post('/', { id, ...userData })
     return response.data
   },
 
@@ -35,7 +39,7 @@ export const userApi = {
     return response.data
   },
 
-  deleteAccount: async () => {
-    await userAxios.delete('/')
-  }
+  delete: async (id) => {
+    await userAxios.delete(`/${id}`)
+  },
 }

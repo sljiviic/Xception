@@ -8,7 +8,8 @@ const Banner = ({
   target,
   image,
   imageAlt,
-  className
+  className,
+  ...props
 }) => {
 
   if (as === 'button') {
@@ -31,6 +32,8 @@ const Banner = ({
       href={href}
       target={target}
       className={clsx(classes.banner, className)}
+      rel='noopener noreferrer'
+      {...props}
     >
       <img
         src={image}

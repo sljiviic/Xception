@@ -18,18 +18,11 @@
   opacity: 0.8;
 }
 
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: var(--border-radius);
-}
-
 .expireBadge {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #777777;
+  background-color: #77777760;
   color: var(--color-text-primary);
   padding: 0.4rem 0.8rem;
   font-size: var(--text-sm);
@@ -43,6 +36,80 @@
   opacity: 0.6;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.itemContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius);
+}
+
+.rarityIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25%;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+  background-color: currentColor;
+  box-shadow: 0 0 18px 30px currentColor;
+}
+
+.itemBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.itemBody::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('@/assets/itemBg.png');
+  background-size: 200%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.itemHeader {
+  text-align: left;
+  padding: 0.3rem 0.7rem;
+}
+
+.floatText {
+  opacity: 0.8;
+}
+
+.image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: 60%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.itemFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0.7rem;
+  opacity: 0.8;
+}
+
+.priceSymbol {
+  font-size: var(--text-xs);
 }
 
 @media (max-width: 767px) {

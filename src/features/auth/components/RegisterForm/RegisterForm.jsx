@@ -1,25 +1,55 @@
 import classes from './RegisterForm.module.css'
-import { useForm } from 'react-hook-form'
+import { useEffect } from 'react'
+import { useForm, useWatch } from 'react-hook-form'
 import { useRegister } from '../../hooks/useRegister'
 import Button from '@/components/ui/Button/Button'
 import Input from '@/components/ui/Input/Input'
 
-const RegisterForm = () => {
+const RegisterForm = ({ onSuccess, values, setValues }) => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
+    reset,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    defaultValues: values,
+  })
+  const watched = useWatch({ control })
   const { register: registerUser, isLoading } = useRegister()
-  const password = watch('password')
 
-  const onSubmit = (data) => {
-    registerUser({
-      email: data.email,
-      password: data.password,
-      username: data.username,
+  useEffect(() => {
+    setValues?.({
+      username: watched?.username,
+      email: watched?.email,
+      password: watched?.password,
+      confirmPassword: watched?.confirmPassword
     })
+  }, [watched, setValues])
+
+  const onSubmit = async (data) => {
+    try {
+      await registerUser({
+        email: data.email,
+        password: data.password,
+        username: data.username,
+      })
+      onSuccess?.()
+      reset({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      })
+      setValues({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      })
+    } catch (error) {
+      console.error('Registration failed:', error)
+    }
   }
 
   return (
@@ -74,7 +104,7 @@ const RegisterForm = () => {
         {...register('confirmPassword', {
           required: 'Please confirm your password',
           validate: (value) =>
-            value === password || 'Passwords do not match',
+            value === watched?.password || 'Passwords do not match',
         })}
         error={errors.confirmPassword?.message}
         autoComplete='new-password'

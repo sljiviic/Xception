@@ -8,15 +8,15 @@ import classes from './TaskList.module.css'
 import clsx from 'clsx'
 
 const TaskList = ({ ref }) => {
-  const { tasks, dailyTasks, mandatoryTasks, isFetchingTasks, fetchTasks } = useTasks()
-  const { isAllCompleted: areMandatoryCompleted } = useMandatoryTasksCompleted()
+  const { dailyTasks, mandatoryTasks, isFetchingTasks, fetchTasks } = useTasks()
+  const { areMandatoryCompleted } = useMandatoryTasksCompleted()
 
   useEffect(() => {
     fetchTasks()
   }, [fetchTasks])
 
   if (isFetchingTasks) return <LoadingSpinner text='Loading tasks...' size='medium' />
-  if (!(tasks instanceof Array) || !tasks.length) return <Error error='No tasks available at the moment' type='empty' />
+  if (!dailyTasks.length || !mandatoryTasks.length) return <Error error='No tasks available at the moment' type='empty' />
 
   return (
     <div className={classes.taskListContainer} ref={ref}>
@@ -36,7 +36,7 @@ const TaskList = ({ ref }) => {
           Complete these tasks to be able to join giveaways
         </p>
         <div className={classes.tasks}>
-          {mandatoryTasks.map(task => (
+          {mandatoryTasks?.map(task => (
             <TaskItem key={task.id} task={task} className={classes.scrollerItem} />
           ))}
         </div>
@@ -59,7 +59,7 @@ const TaskList = ({ ref }) => {
             Complete these tasks every day and earn tickets
           </p>
           <div className={classes.tasks}>
-            {dailyTasks.map(task => (
+            {dailyTasks?.map(task => (
               <TaskItem key={task.id} task={task} className={classes.scrollerItem} />
             ))}
           </div>

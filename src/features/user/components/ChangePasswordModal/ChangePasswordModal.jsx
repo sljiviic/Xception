@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import classes from './ChangePasswordModal.module.css'
-import { useUserProfile } from '../../hooks/useUserProfile'
+import { useUser } from '../../hooks/useUser'
 import Modal from '@/components/ui/Modal/Modal'
 import Input from '@/components/ui/Input/Input'
 import Button from '@/components/ui/Button/Button'
@@ -18,7 +18,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen])
 
-  const { changePassword, isChangingPassword } = useUserProfile()
+  const { changePassword, isChangingPassword } = useUser()
 
   const handlePasswordChange = async (e) => {
     e.preventDefault()

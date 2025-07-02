@@ -1,12 +1,13 @@
 import { useCallback, useRef, useEffect, useState } from 'react'
-import { useTaskUserStore } from '../stores/useTaskUserStore'
 import { useTaskCompletion } from './useTaskCompletion'
 import { useTaskTimerStore } from '../stores/useTaskTimerStore'
+import { useTasksUser } from './useTasksUser'
 
 export const useTaskClick = (task) => {
-  const createUserTask = useTaskUserStore(state => state.createUserTask)
   const getIsExpired = useTaskTimerStore(state => state.getIsExpired)
-  const completeUserTask = useTaskCompletion()
+
+  const { completeTask } = useTasksUser()
+  const completeTaskUser = useTaskCompletion()
   const pendingCompletionRef = useRef(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -25,16 +26,16 @@ export const useTaskClick = (task) => {
 
       // Create pending task
       setIsLoading(true)
-      const taskUser = await createUserTask({
+      const taskUser = await completeTask({
         taskId: task.id,
-        status: 'PENDING'
+        start: new Date()
       })
 
-      // Schedule completion
+      // Schedule completion (20 sec delay)
       const timer = setTimeout(async () => {
-        await completeUserTask(taskUser)
+        await completeTaskUser(taskUser)
         setIsLoading(false)
-      }, 60000)
+      }, 20000)
 
       pendingCompletionRef.current = { taskUser, timer }
     } catch (error) {
@@ -44,7 +45,7 @@ export const useTaskClick = (task) => {
     }
 
   },
-    [completeUserTask, createUserTask, getIsExpired, task, isLoading]
+    [completeTaskUser, completeTask, getIsExpired, task, isLoading]
   )
 
   // Cleanup pending completion on unmount

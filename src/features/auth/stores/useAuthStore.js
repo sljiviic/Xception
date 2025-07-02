@@ -2,18 +2,20 @@ import { create } from 'zustand'
 import { authApi } from '../api/authApi'
 
 export const useAuthStore = create((set, get) => ({
-  user: null,
+  user: {},
   accessToken: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
 
+  setUser: (user) => set({ user }),
+
   // userData needs to be either a username or an email and password
   login: async (userData) => {
     set({ isLoading: true, error: null })
     try {
-      const { user, accessToken } = await authApi.login(userData)
-      set({ user, accessToken, isAuthenticated: true })
+      const user = await authApi.login(userData)
+      set({ user, accessToken: user.token, isAuthenticated: true })
     } catch (error) {
       set({
         error: error instanceof Error ? error : new Error('Login failed'),
@@ -29,8 +31,8 @@ export const useAuthStore = create((set, get) => ({
   register: async (userData) => {
     set({ isLoading: true, error: null })
     try {
-      const { user, accessToken } = await authApi.register(userData)
-      set({ user, accessToken, isAuthenticated: true })
+      const user = await authApi.register(userData)
+      set({ user, accessToken: user.token, isAuthenticated: true })
     } catch (error) {
       set({
         error: error instanceof Error ? error : new Error('Registration failed'),

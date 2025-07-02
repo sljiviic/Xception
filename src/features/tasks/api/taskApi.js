@@ -1,33 +1,27 @@
-import axios from 'axios'
-
-const taskAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/task',
-  withCredentials: true,
-})
+import operationAxios from '@/lib/api/instances/operationAxios'
 
 export const taskApi = {
-  getAll: async (query = '') => {
-    const response = await taskAxios.get(query)
+  getAll: async (params = {}) => {
+    const response = await operationAxios.get('/', {
+      params,
+      paramsSerializer: {
+        indexes: null
+      }
+    })
     return response.data
   },
 
   getById: async (id) => {
-    const response = await taskAxios.get(`/${id}`)
+    const response = await operationAxios.get(`/${id}`)
     return response.data
   },
 
-  create: async (taskData) => {
-    const response = await taskAxios.post('/', taskData)
-    return response.data
-  },
-
-  update: async (id, taskData) => {
-    const response = await taskAxios.put(`/${id}`, taskData)
+  save: async (taskData) => {
+    const response = await operationAxios.post('/', taskData)
     return response.data
   },
 
   delete: async (id) => {
-    const response = await taskAxios.delete(`/${id}`)
-    return response.data
+    await operationAxios.delete(`/${id}`)
   }
 }

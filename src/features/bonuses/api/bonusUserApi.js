@@ -1,22 +1,14 @@
 import bonusUserAxios from '@/lib/api/instances/bonusUserAxios'
 
 export const bonusUserApi = {
-  getAll: async (
-    start,
-    end,
-    page,
-    pageSize,
-    orderBy,
-    order
-  ) => {
+  getAll: async (userId, params = {}) => {
     const response = await bonusUserAxios.get('', {
       params: {
-        start,
-        end,
-        page,
-        pageSize,
-        orderBy,
-        order
+        userId,
+        ...params
+      },
+      paramsSerializer: {
+        indexes: null
       }
     })
     return response.data
@@ -27,15 +19,10 @@ export const bonusUserApi = {
     return response.data
   },
 
-  create: async (bonusId) => {
-    const response = await bonusUserAxios.post('/', { bonusId })
+  claim: async (userId, bonusId) => {
+    const response = await bonusUserAxios.post('/', { userId, bonusId })
     return response.data
   },
-
-  // update: async (id, bonusUserData) => {
-  //   const response = await bonusUserAxios.put(`/${id}`, bonusUserData)
-  //   return response.data
-  // },
 
   delete: async (id) => {
     await bonusUserAxios.delete(`/${id}`)

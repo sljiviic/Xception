@@ -15,8 +15,8 @@ export const useRegister = () => {
         navigate('/', { replace: true })
         toast.success('Account created! Welcome aboard.')
       } catch (error) {
-        console.error('Registration failed:', error)
         toast.error('Registration failed. Please try again.')
+        throw error
       }
     },
     [register, navigate]

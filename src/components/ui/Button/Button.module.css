@@ -86,7 +86,7 @@ a.button {
 
 .medium {
   font-size: var(--text-base);
-  padding: 0.6em 3em;
+  padding: 0.6em min(3em, 10%);
 }
 
 .large {

@@ -3,5 +3,3 @@ export { default as TicketConversionModal } from './components/TicketConversionM
 
 export { useTickets } from './hooks/useTickets'
 export { useTicketConversion } from './hooks/useTicketConversion'
-
-export { useTicketStore } from './stores/useTicketStore'

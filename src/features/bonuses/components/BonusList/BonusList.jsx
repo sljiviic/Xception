@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useBonus } from '../../hooks/useBonus'
+import { useBonusUser } from '../../hooks/useBonusUser'
 import BonusCard from '../BonusCard/BonusCard'
 import Error from '@/components/ui/Error/Error'
 import LoadingSpinner from '@/components/ui/LoadingSpinner/LoadingSpinner'
@@ -8,20 +9,24 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner/LoadingSpinner'
 const BonusList = ({ limit, variant, className }) => {
   const {
     bonuses,
-    isFetchingBonuses,
-    isFetchingUserBonuses,
     fetchBonuses,
-    fetchUserBonuses,
-    hasClaimedBonus
+    isFetchingBonuses
   } = useBonus()
+
+  const {
+    bonusesUser,
+    fetchBonusesUser,
+    isFetchingBonusesUser,
+    // hasClaimedBonus
+  } = useBonusUser()
 
   useEffect(() => {
     fetchBonuses({ pageSize: limit })
-    fetchUserBonuses({ pageSize: limit })
-  }, [fetchBonuses, fetchUserBonuses, limit])
+    fetchBonusesUser({ pageSize: limit })
+  }, [fetchBonuses, fetchBonusesUser, limit])
 
-  if (!(bonuses instanceof Array) || !bonuses.length) return <Error error='No bonuses available at the moment' type='empty' />
-  if (isFetchingBonuses || isFetchingUserBonuses) return <LoadingSpinner text='Loading Bonuses...' size='medium' />
+  if (isFetchingBonuses || isFetchingBonusesUser) return <LoadingSpinner text='Loading Bonuses...' size='medium' />
+  if (!(bonuses.items instanceof Array) || !bonuses.items.length) return <Error error='No bonuses available at the moment' type='empty' />
 
   return (
     <div className={className}>
@@ -29,7 +34,7 @@ const BonusList = ({ limit, variant, className }) => {
         <BonusCard
           key={bonus?.id}
           bonus={bonus}
-          isClaimed={hasClaimedBonus(bonus?.id)}
+          isClaimed={bonusesUser.items?.some(bu => bu.bonusId === bonus.id)}
           variant={variant}
         />
       ))}

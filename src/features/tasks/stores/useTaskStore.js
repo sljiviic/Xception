@@ -2,15 +2,15 @@ import { create } from 'zustand'
 import { taskApi } from '../api/taskApi'
 
 export const useTaskStore = create((set, get) => ({
-  tasks: [],
+  tasks: { items: [], count: 0 },
   isFetchingTasks: false,
 
-  fetchTasks: async (query = '') => {
+  fetchTasks: async (params) => {
     if (get().isFetchingTasks) return
 
     set({ isFetchingTasks: true })
     try {
-      const tasks = await taskApi.getAll(query)
+      const tasks = await taskApi.getAll(params)
       set({
         tasks,
         isFetchingTasks: false
@@ -21,28 +21,42 @@ export const useTaskStore = create((set, get) => ({
     }
   },
 
-  createTask: async (taskData) => {
-    const newTask = await taskApi.create(taskData)
-    set(state => ({
-      tasks: [...state.tasks, newTask]
-    }))
-    return newTask
+  fetchById: async (id) => {
+    set({ isFetchingTasks: true })
+    try {
+      const task = await taskApi.getById(id)
+      set({ isFetchingTasks: false })
+      return task
+    } catch (error) {
+      set({ isFetchingTasks: false })
+      throw error
+    }
   },
 
-  updateTask: async (taskId, taskData) => {
-    const updatedTask = await taskApi.update(taskId, taskData)
-    set(state => ({
-      tasks: state.tasks.map(task =>
-        task.id === taskId ? updatedTask : task
-      )
-    }))
-    return updatedTask
+  saveTask: async (taskData) => {
+    const savedTask = await taskApi.save(taskData)
+    set(state => {
+      const exists = state.tasks.items.some(t => t.id === savedTask.id)
+
+      return {
+        tasks: {
+          items: exists
+            ? state.tasks.items.map(t => t.id === savedTask.id ? savedTask : t)
+            : [...state.tasks.items, savedTask],
+          count: exists ? state.tasks.count : state.tasks.count + 1
+        }
+      }
+    })
+    return savedTask
   },
 
-  deleteTask: async (taskId) => {
-    await taskApi.delete(taskId)
+  deleteTask: async (id) => {
+    await taskApi.delete(id)
     set(state => ({
-      tasks: state.tasks.filter(task => task.id !== taskId)
+      tasks: {
+        items: state.tasks.items.filter(t => t.id !== id),
+        count: Math.max(0, state.tasks.count - 1)
+      }
     }))
   }
 }))

@@ -2,60 +2,56 @@ import { useCallback } from 'react'
 import { useBonusStore } from '../stores/useBonusStore'
 
 export const useBonus = () => {
+  // Store states
   const bonuses = useBonusStore(state => state.bonuses)
-  const userBonuses = useBonusStore(state => state.userBonuses)
-  const isFetchingBonuses = useBonusStore(state => state.isFetchingBonuses)
-  const isFetchingUserBonuses = useBonusStore(state => state.isFetchingUserBonuses)
-  const fetchBonuses = useBonusStore(state => state.fetchBonuses)
-  const fetchUserBonuses = useBonusStore(state => state.fetchUserBonuses)
-  const claimBonus = useBonusStore(state => state.claimBonus)
-  // const updateBonus = useBonusStore(state => state.updateBonus)
 
-  const handleFetchBonuses = useCallback(async () => {
+  // Store actions
+  const fetchBonuses = useBonusStore(state => state.fetchBonuses)
+  const fetchById = useBonusStore(state => state.fetchById)
+  const saveBonus = useBonusStore(state => state.saveBonus)
+  const deleteBonus = useBonusStore(state => state.deleteBonus)
+
+  // Store loading states
+  const isFetchingBonuses = useBonusStore(state => state.isFetchingBonuses)
+
+  const handleFetchBonuses = useCallback(async (params) => {
     try {
-      await fetchBonuses()
+      await fetchBonuses(params)
     } catch (error) {
       console.error('Fetching bonuses failed:', error)
     }
   }, [fetchBonuses])
 
-  const handleFetchUserBonuses = useCallback(async () => {
+  const handleFetchById = useCallback(async (id) => {
     try {
-      await fetchUserBonuses()
+      return await fetchById(id)
     } catch (error) {
-      console.error('Fetching user bonuses failed:', error)
+      console.error('Fetching bonus by ID failed:', error)
     }
-  }, [fetchUserBonuses])
+  }, [fetchById])
 
-  const hasClaimedBonus = useCallback((bonusId) => {
-    return userBonuses.items.some(ub => ub.bonusId === bonusId)
-  }, [userBonuses])
-
-  // Handle bonus claiming with URL redirection
-  const handleClaimBonus = useCallback(async (bonus) => {
+  const handleSaveBonus = useCallback(async (bonusData) => {
     try {
-      const claimedBonus = await claimBonus(bonus.id)
-
-      // Redirect to bonus URL if available
-      if (bonus.url) {
-        window.open(bonus.url, '_blank')
-      }
-
-      return claimedBonus
+      return await saveBonus(bonusData)
     } catch (error) {
-      console.error('Failed to claim bonus:', error)
+      console.error('Creating / Saving bonus failed:', error)
     }
-  }, [claimBonus])
+  }, [saveBonus])
+
+  const handleDeleteBonus = useCallback(async (id) => {
+    try {
+      await deleteBonus(id)
+    } catch (error) {
+      console.error('Deleting bonus failed:', error)
+    }
+  }, [deleteBonus])
 
   return {
     bonuses,
-    userBonuses,
-    isFetchingBonuses,
-    isFetchingUserBonuses,
     fetchBonuses: handleFetchBonuses,
-    fetchUserBonuses: handleFetchUserBonuses,
-    hasClaimedBonus,
-    claimBonus: handleClaimBonus,
-    // updateBonus,
+    fetchById: handleFetchById,
+    saveBonus: handleSaveBonus,
+    deleteBonus: handleDeleteBonus,
+    isFetchingBonuses,
   }
 }

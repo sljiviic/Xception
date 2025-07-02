@@ -17,8 +17,8 @@ export const useLogin = () => {
         navigate('/', { replace: true })
         toast.success(`Welcome back ${user.username}!`)
       } catch (error) {
-        console.error('Login failed:', error)
         toast.error('Login failed. Please check your credentials.')
+        throw error
       }
     },
     [login, navigate, user]

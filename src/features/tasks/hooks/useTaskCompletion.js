@@ -1,45 +1,33 @@
 import { useCallback } from 'react'
 import { toast } from 'sonner'
-import { useTaskUserStore } from '../stores/useTaskUserStore'
+import { useTaskStore } from '../stores/useTaskStore'
 import { useTaskTimerStore } from '../stores/useTaskTimerStore'
-import { useUserLevel } from '@/features/user'
-import { useTickets } from '@/features/tickets'
-import { taskApi } from '../api/taskApi'
+import { useTasksUser } from './useTasksUser'
 
 export const useTaskCompletion = () => {
-  const updateUserTask = useTaskUserStore(state => state.updateUserTask)
   const startTimer = useTaskTimerStore(state => state.startTimer)
-  const { calculateRewardBonus } = useUserLevel()
-  const { awardTickets } = useTickets()
 
-  const completeUserTask = useCallback(async (taskUser) => {
+  const { completeTask } = useTasksUser()
+
+  const completeTaskUser = useCallback(async (taskUser) => {
     try {
       if (!taskUser?.id) {
         throw new Error('Invalid task user data')
       }
 
       const completedAt = new Date()
-      const updatedUserTask = await updateUserTask(taskUser.id, {
-        status: 'COMPLETED',
-        completedAt
+      const updatedTaskUser = await completeTask({
+        taskId: taskUser.id,
+        end: completedAt,
       })
 
-      const task = await taskApi.getById(updatedUserTask.taskId)
+      const task = await useTaskStore.getState().getById(updatedTaskUser.taskId)
       if (!task) {
         throw new Error('Associated task not found')
       }
 
-      // Award mandatory
-      await awardTickets(task.baseReward)
-
-      // Award daily and start the timer
+      // Start the timer if daily
       if (task.type === 'daily') {
-        const reward = calculateRewardBonus(task.baseReward)
-        if (!reward?.total) {
-          throw new Error('Invalid reward calculation')
-        }
-
-        await awardTickets(reward.total)
         startTimer(task.id, completedAt)
         toast.success('Task complete. Keep it up!')
       }
@@ -48,8 +36,8 @@ export const useTaskCompletion = () => {
       toast.error("Oops! Couldn't mark the task as complete.")
     }
   },
-    [updateUserTask, calculateRewardBonus, awardTickets, startTimer]
+    [completeTask, startTimer]
   )
 
-  return completeUserTask
+  return completeTaskUser
 }

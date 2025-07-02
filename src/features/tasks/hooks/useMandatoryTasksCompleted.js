@@ -1,15 +1,21 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTasks } from './useTasks'
+import { useTasksUser } from './useTasksUser'
 
 export const useMandatoryTasksCompleted = () => {
-  const { mandatoryTasks, isFetchingTasks } = useTasks()
+  const { fetchTasks, mandatoryTasks, isFetchingTasks } = useTasks()
+  const { tasksUser, fetchTasksUser, isFetchingTasksUser } = useTasksUser()
 
-  const isAllCompleted = useMemo(() => {
-    if (isFetchingTasks || !mandatoryTasks) return false
-    if (!mandatoryTasks.length) return false
+  useEffect(() => {
+    fetchTasks()
+    fetchTasksUser()
+  }, [fetchTasks, fetchTasksUser])
 
-    return mandatoryTasks.every(task => task.status === 'COMPLETED')
-  }, [mandatoryTasks, isFetchingTasks])
+  const areMandatoryCompleted = useMemo(() => {
+    if (isFetchingTasks || isFetchingTasksUser || !mandatoryTasks.length) return false
 
-  return isAllCompleted
+    return mandatoryTasks.every(mt => tasksUser.some(tu => tu.taskId === mt.id && tu.end))
+  }, [mandatoryTasks, isFetchingTasks, tasksUser, isFetchingTasksUser])
+
+  return areMandatoryCompleted
 }

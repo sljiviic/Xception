@@ -6,7 +6,7 @@ export const useTicketConversion = () => {
     regularTickets,
     conversionRate,
     convertToSpecial,
-    isConvertingToSpecial
+    isUpdatingUser
   } = useTickets()
 
   const [amount, setAmount] = useState('1')
@@ -51,7 +51,7 @@ export const useTicketConversion = () => {
     amount,
     inputError,
     cost: conversionRate * Number(amount),
-    isLoading: isConvertingToSpecial,
+    isLoading: isUpdatingUser,
     handleConvert,
     handleAmountChange,
     resetConversion,

@@ -1,9 +1,9 @@
 import classes from './LoadingSpinner.module.css'
 import clsx from 'clsx'
 
-const LoadingSpinner = ({ text, size = 'medium' }) => {
+const LoadingSpinner = ({ text, size = 'medium', ...props }) => {
   return (
-    <div className={classes.loadingContainer}>
+    <div className={classes.loadingContainer} {...props}>
       <div className={clsx(
         classes.loadingSpinner,
         classes[size]

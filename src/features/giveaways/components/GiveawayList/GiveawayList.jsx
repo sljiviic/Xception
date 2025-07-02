@@ -13,21 +13,21 @@ const GiveawayList = () => {
   }, [fetchActive])
 
   const monthlyGiveaway = useMemo(() =>
-    activeGiveaways instanceof Array
-      ? activeGiveaways.find(ag => ag.type === 'MONTHLY')
-      : [], [activeGiveaways])
+    activeGiveaways.items instanceof Array
+      ? activeGiveaways.items.find(ag => ag?.intervalDays === 30)
+      : null, [activeGiveaways])
   const specialGiveaway = useMemo(() =>
-    activeGiveaways instanceof Array
-      ? activeGiveaways.find(ag => ag.type === 'SPECIAL')
-      : [], [activeGiveaways])
+    activeGiveaways.items instanceof Array
+      ? activeGiveaways.items.find(ag => ag.giveawayType === 1)
+      : null, [activeGiveaways])
   const twitchGiveaway = useMemo(() =>
-    activeGiveaways instanceof Array
-      ? activeGiveaways.find(ag => ag.type === 'TWITCH')
-      : [], [activeGiveaways])
+    activeGiveaways.items instanceof Array
+      ? activeGiveaways.items.find(ag => ag.giveawayType === 2)
+      : null, [activeGiveaways])
 
   return (
     <div className={classes.giveawayWrapper}>
-      {monthlyGiveaway?.length ? (
+      {monthlyGiveaway ? (
         <SectionBox
           title='Monthly free drop (~50$)'
           className={classes.giveaway1}
@@ -37,7 +37,7 @@ const GiveawayList = () => {
       ) : (
         <Error error='No giveaways available at the moment' type='empty' />
       )}
-      {specialGiveaway?.length ? (
+      {specialGiveaway ? (
         <SectionBox
           title='SPECIAL DROP'
           className={classes.giveaway2}
@@ -45,9 +45,9 @@ const GiveawayList = () => {
           <GiveawayItem giveaway={specialGiveaway} isRedirect={false} className={classes.giveawayItem} />
         </SectionBox>
       ) : (
-        <Error className={classes.giveaway2} error='No giveaways available at the moment' type='empty' />
+        <Error error='No giveaways available at the moment' type='empty' />
       )}
-      {twitchGiveaway?.length ? (
+      {twitchGiveaway ? (
         <SectionBox
           title='Twitch follower drop'
           className={classes.giveaway3}

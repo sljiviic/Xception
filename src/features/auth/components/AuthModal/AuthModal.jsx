@@ -1,4 +1,5 @@
 import classes from './AuthModal.module.css'
+import { useState, useCallback } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../stores/useAuthStore'
 import { useUiStore } from '@/stores/useUiStore'
@@ -11,26 +12,30 @@ import steamIcon from '@/assets/icons/steam.svg'
 const AuthModal = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const [loginValues, setLoginValues] = useState({ login: '', password: '' })
+  const [registerValues, setRegisterValues] = useState({ username: '', email: '', password: '', confirmPassword: '' })
   const authModal = useUiStore(state => state.authModal)
   const toggleDefaultView = useUiStore(state => state.toggleDefaultView)
   const closeAuthModal = useUiStore(state => state.closeAuthModal)
   const error = useAuthStore(state => state.error)
   const clearError = useAuthStore(state => state.clearError)
 
-  const handleSuccess = () => {
+  const handleSuccess = useCallback(() => {
     const redirectPath = authModal.redirectPath || location.state?.from || '/'
     navigate(redirectPath)
     closeAuthModal()
     clearError()
-  }
+  }, [authModal.redirectPath, location.state?.from, navigate, closeAuthModal, clearError])
+
+  const handleClose = useCallback(() => {
+    closeAuthModal()
+    clearError()
+  }, [closeAuthModal, clearError])
 
   return (
     <Modal
       isOpen={authModal.isOpen}
-      onClose={() => {
-        closeAuthModal()
-        clearError()
-      }}
+      onClose={handleClose}
       title={authModal.defaultView === 'login' ? 'Login' : 'Register'}
       error={error?.response?.data?.message || error?.message}
       footer={
@@ -57,9 +62,17 @@ const AuthModal = () => {
       }
     >
       {authModal.defaultView === 'login' ? (
-        <LoginForm onSuccess={handleSuccess} />
+        <LoginForm
+          onSuccess={handleSuccess}
+          values={loginValues}
+          setValues={setLoginValues}
+        />
       ) : (
-        <RegisterForm onSuccess={handleSuccess} />
+        <RegisterForm
+          onSuccess={handleSuccess}
+          values={registerValues}
+          setValues={setRegisterValues}
+        />
       )}
     </Modal>
   )

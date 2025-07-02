@@ -1,3 +1,4 @@
+import { useId } from 'react'
 import classes from './Input.module.css'
 import clsx from 'clsx'
 
@@ -10,6 +11,9 @@ const Input = ({
   wrapperClassName,
   ...props
 }) => {
+  const reactId = useId()
+  const inputId = name ? `${name}-${reactId}` : reactId
+
   const inputClass = clsx(
     classes.input,
     { [classes.error]: !!error },
@@ -35,7 +39,7 @@ const Input = ({
           </label>
         )}
         <input
-          id={name}
+          id={inputId}
           name={name}
           className={inputClass}
           aria-label={label}
